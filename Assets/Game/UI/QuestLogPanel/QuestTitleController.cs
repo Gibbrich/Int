@@ -2,34 +2,96 @@
 using UnityEngine.UI;
 using Zenject;
 
+/// <summary>
+/// Used for managing quest item in <see cref="QuestLogPanelController"/>
+/// </summary>
 public class QuestTitleController : MonoBehaviour
 {
-    public Quest Quest { get; set; }
+    #region Properties
 
-    #region Private methods
-
-    [Inject] private UIController uiController;
-
-    private Button button;
+    public AbstractQuest Quest { get; set; }
 
     #endregion
 
-    // Use this for initialization
-    void Start()
+    #region Private methods
+
+    [Inject]
+    private UIController uiController;
+
+    private Button button;
+    private Text title;
+    private RectTransform rectTransform;
+
+    #endregion
+
+    #region Unity callbacks
+
+    private void Awake()
     {
-        /* todo    - remove quest initialization
-         * @author - Артур
-         * @date   - 17.05.2018
-         * @time   - 22:12
-        */
-        Quest = new Quest {Description = "Test description", Title = "Test title"};
-        
         button = GetComponent<Button>();
         button.onClick.AddListener(() => uiController.OpenQuestDescriptionPanel(Quest));
+
+        title = GetComponentInChildren<Text>();
+        rectTransform = GetComponent<RectTransform>();
     }
 
-    // Update is called once per frame
-    void Update()
+    #endregion
+
+    #region Public methods
+
+    public void Init(AbstractQuest quest, Position position)
     {
+        Quest = quest;
+        title.text = Quest.Title;
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.anchorMax = new Vector2(1, 1);
+        rectTransform.offsetMax = new Vector2(position.OffsetRight, position.OffsetTop);
+        rectTransform.offsetMin = new Vector2(position.OffsetLeft, position.OffsetBottom);
+    }
+
+    #endregion
+
+    /// <summary>
+    /// Used for instantiating <see cref="QuestTitleController"/> prefab in runtime,
+    /// as it has fields, marked with <see cref="InjectAttribute"/>
+    /// </summary>
+    public class Factory : Factory<QuestTitleController>
+    {
+    }
+
+    public struct Position
+    {
+        private readonly float offsetLeft;
+        private readonly float offsetRight;
+        private readonly float offsetTop;
+        private readonly float offsetBottom;
+
+        public Position(float offsetLeft, float offsetRight, float offsetTop, float offsetBottom)
+        {
+            this.offsetLeft = offsetLeft;
+            this.offsetRight = offsetRight;
+            this.offsetTop = offsetTop;
+            this.offsetBottom = offsetBottom;
+        }
+
+        public float OffsetLeft
+        {
+            get { return offsetLeft; }
+        }
+
+        public float OffsetRight
+        {
+            get { return offsetRight; }
+        }
+
+        public float OffsetTop
+        {
+            get { return offsetTop; }
+        }
+
+        public float OffsetBottom
+        {
+            get { return offsetBottom; }
+        }
     }
 }

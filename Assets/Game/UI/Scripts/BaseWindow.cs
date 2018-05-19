@@ -6,7 +6,7 @@ public abstract class BaseWindow : MonoBehaviour
 {
     #region Properties
 
-    public bool IsPanelOpened
+    public virtual bool IsPanelOpened
     {
         get { return gameObject.activeSelf; }
         set { gameObject.SetActive(value); }

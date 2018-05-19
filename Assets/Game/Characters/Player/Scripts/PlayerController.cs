@@ -3,6 +3,10 @@ using Zenject;
 
 public class PlayerController : MonoBehaviour
 {
+    private const int MOUSE_LEFT_BUTTON = 0;
+    private const int INTERACTABLE_LAYER = 8;
+    private const float MAX_RAYCAST_DEPTH = 100f;
+    
     #region Editor tweakable fields
 
     [SerializeField] [Tooltip("World units per second")]
@@ -37,11 +41,35 @@ public class PlayerController : MonoBehaviour
         HandleRotationButtonsPressed();
         HandleEscapeButtonClicked();
         HandleQuestButtonClicked();
+        HandleMouseLeftButtonClick();
     }
-    
+
     #endregion
     
     #region Private methods
+    
+    private void HandleMouseLeftButtonClick()
+    {
+        if (Input.GetMouseButtonDown(MOUSE_LEFT_BUTTON))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            LayerMask interactableLayerMask = 1 << INTERACTABLE_LAYER;
+            RaycastHit hitInfo;
+            bool wasHit = Physics.Raycast(ray, out hitInfo, MAX_RAYCAST_DEPTH, interactableLayerMask);
+            if (wasHit)
+            {
+                NPC npc = hitInfo.collider.GetComponent<NPC>();
+                if (npc)
+                {
+                    AbstractQuest abstractQuest = npc.Interact();
+                    if (abstractQuest != null)
+                    {
+                        uiController.OpenQuestDescriptionPanel(abstractQuest);
+                    }
+                }
+            }
+        }
+    }
     
     private void HandleMovingButtonsPressed()
     {

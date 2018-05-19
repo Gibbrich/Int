@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using JetBrains.Annotations;
+using Zenject;
 
 /// <summary>
 /// This class should be used for all interactions with UI.
@@ -36,7 +37,7 @@ public class UIController
     /// <returns></returns>
     public bool IsAnyUIPanelOpened()
     {
-        return questLogPanelController.IsPanelOpened && questDescriptionPanelController.IsPanelOpened;
+        return questLogPanelController.IsPanelOpened || questDescriptionPanelController.IsPanelOpened;
     }
 
     public void CloseAllUIPanels()
@@ -45,9 +46,9 @@ public class UIController
         questDescriptionPanelController.IsPanelOpened = false;
     }
 
-    public void OpenQuestDescriptionPanel(Quest quest)
+    public void OpenQuestDescriptionPanel([NotNull] AbstractQuest abstractQuest)
     {
-        questDescriptionPanelController.Open(quest);
+        questDescriptionPanelController.Open(abstractQuest);
     }
 
     public bool IsQuestDescriptionPanelOpened()
