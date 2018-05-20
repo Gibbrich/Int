@@ -1,11 +1,12 @@
 ﻿using System;
+using Game.Scripts.Quests;
 using JetBrains.Annotations;
 using UnityEngine;
 
 /// <summary>
 /// This class should be used as interface for interactions with any NPC. 
 /// </summary>
-public class NPC : MonoBehaviour, IInteractable<object, AbstractQuest>
+public class NPCActor : MonoBehaviour, IInteractable<object, AbstractQuest>
 {
     #region Private fields
 

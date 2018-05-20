@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Game.Characters.Player.Scripts;
 using Game.Scripts;
+using Game.Scripts.Quests;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -49,7 +51,7 @@ public class QuestLogPanelController : BaseWindow
     #region Private fields
 
     [Inject]
-    private Player player;
+    private QuestSystem questSystem;
 
     private Pool<QuestTitleController> pool;
 
@@ -110,7 +112,7 @@ public class QuestLogPanelController : BaseWindow
 
     private void ShowQuests()
     {
-        player.Quests.ForEach(quest =>
+        questSystem.GetQuests().ForEach(quest =>
         {
             Vector2 offset = GetPosition();
             var position = new QuestTitleController.Position(OFFSET_LEFT, OFFSET_RIGHT, offset.x, offset.y);

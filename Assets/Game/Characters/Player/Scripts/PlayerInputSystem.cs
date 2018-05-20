@@ -1,7 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Diagnostics.CodeAnalysis;
+using Game.Characters.Scripts;
+using Game.Scripts.Quests;
+using JetBrains.Annotations;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
-public class PlayerController : MonoBehaviour
+[SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
+public class PlayerInputSystem : MonoBehaviour
 {
     private const int MOUSE_LEFT_BUTTON = 0;
     private const int INTERACTABLE_LAYER = 8;
@@ -19,15 +25,24 @@ public class PlayerController : MonoBehaviour
     
     #region Private fields
 
+    [NotNull]
     [Inject]
     private GameController gameController;
 
+    [NotNull]
     [Inject] 
     private UIController uiController;
+
+    private WeaponSystem weaponSystem;
     
     #endregion
 
     #region Unity callbacks
+
+    private void Start()
+    {
+        weaponSystem = GetComponent<WeaponSystem>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -45,7 +60,8 @@ public class PlayerController : MonoBehaviour
     
     private void HandleMouseLeftButtonClick()
     {
-        if (Input.GetMouseButtonDown(MOUSE_LEFT_BUTTON))
+        // only if mouse not over ui
+        if (Input.GetMouseButtonDown(MOUSE_LEFT_BUTTON) && !EventSystem.current.IsPointerOverGameObject()) 
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             LayerMask interactableLayerMask = 1 << INTERACTABLE_LAYER;
@@ -53,14 +69,21 @@ public class PlayerController : MonoBehaviour
             bool wasHit = Physics.Raycast(ray, out hitInfo, MAX_RAYCAST_DEPTH, interactableLayerMask);
             if (wasHit)
             {
-                NPC npc = hitInfo.collider.GetComponent<NPC>();
-                if (npc)
+                NPCActor npcActor = hitInfo.collider.GetComponent<NPCActor>();
+                if (npcActor)
                 {
-                    AbstractQuest abstractQuest = npc.Interact();
+                    AbstractQuest abstractQuest = npcActor.Interact();
                     if (abstractQuest != null)
                     {
                         uiController.OpenQuestDescriptionPanel(abstractQuest);
                     }
+                    return;
+                }
+
+                IDamageable target = hitInfo.collider.GetComponent<IDamageable>();
+                if (target != null)
+                {
+                    weaponSystem.Attack(target);
                 }
             }
         }

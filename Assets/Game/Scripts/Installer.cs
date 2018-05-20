@@ -1,3 +1,5 @@
+using Game.Characters.Player.Scripts;
+using Game.Characters.Scripts;
 using UnityEngine;
 using Zenject;
 
@@ -16,7 +18,10 @@ public class Installer : MonoInstaller<Installer>
     {
         Container.Bind<GameController>().AsSingle();
         Container.Bind<UIController>().AsSingle();
-        Container.Bind<Player>().AsSingle();
+        Container.Bind<QuestSystem>().AsSingle();
+        
+        Container.Bind<IWeaponSystemController>().To<WeaponSystemController>().AsTransient();
+        Container.Bind<IHealthSystemController>().To<HealthSystemController>().AsTransient();
 
         Container
             .BindFactory<QuestTitleController, QuestTitleController.Factory>()

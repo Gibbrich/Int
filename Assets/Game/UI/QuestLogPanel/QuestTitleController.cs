@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Game.Scripts.Quests;
+using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 

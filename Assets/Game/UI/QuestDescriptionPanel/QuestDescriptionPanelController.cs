@@ -1,32 +1,32 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Game.Characters.Player.Scripts;
+using Game.Scripts.Quests;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Zenject;
 
+[SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
 public class QuestDescriptionPanelController : BaseWindow
 {
     #region Editor tweakable fields
 
     [NotNull]
     [SerializeField]
-    [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     private Text title;
 
     [NotNull]
     [SerializeField]
-    [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     private Text description;
 
     [NotNull]
     [SerializeField]
-    [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     private Button positiveButton;
 
     [NotNull]
     [SerializeField]
-    [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     private Button negativeButton;
 
     #endregion
@@ -35,20 +35,16 @@ public class QuestDescriptionPanelController : BaseWindow
 
     [NotNull]
     [Inject]
-    [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-    private Player player;
+    private QuestSystem questSystem;
 
     [NotNull]
     [Inject]
-    [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     private QuestLogPanelController questLogPanelController;
 
     [NotNull]
-    [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     private Text positiveButtonText;
 
     [NotNull]
-    [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     private Text negativeButtonText;
 
     #endregion
@@ -66,43 +62,32 @@ public class QuestDescriptionPanelController : BaseWindow
         switch (quest.ProgressState)
         {
             case AbstractQuest.State.AVAILABLE_TO_PICK:
-                positiveButtonText.text = "Accept";
-                positiveButton.interactable = true;
-                positiveButton.onClick.AddListener(() =>
+                UpdateButtonState(positiveButton, positiveButtonText, "Accept", () =>
                 {
-                    player.AcceptQuest(quest);
+                    questSystem.AcceptQuest(quest);
                     IsPanelOpened = false;
                 });
-
-                negativeButtonText.text = "Decline";
-                negativeButton.onClick.AddListener(() => IsPanelOpened = false);
+                UpdateButtonState(negativeButton, negativeButtonText, "Decline", () => IsPanelOpened = false);
                 break;
             case AbstractQuest.State.IN_PROGRESS:
-                positiveButtonText.text = "Complete";
-                positiveButton.interactable = false;
-
-                negativeButtonText.text = "Cancel";
-                negativeButton.onClick.AddListener(() =>
+                UpdateButtonState(positiveButton, positiveButtonText, "Complete", isInteractable: false);
+                UpdateButtonState(negativeButton, negativeButtonText, "Cancel", () =>
                 {
-                    player.CancelQuest(quest);
+                    questSystem.CancelQuest(quest);
                     questLogPanelController.RemoveQuestTitle(quest);
                     IsPanelOpened = false;
                 });
                 break;
             case AbstractQuest.State.AVAILABLE_TO_COMPLETE:
-                positiveButtonText.text = "Complete";
-                positiveButton.interactable = true;
-                positiveButton.onClick.AddListener(() =>
+                UpdateButtonState(positiveButton, positiveButtonText, "Complete", () =>
                 {
-                    player.CompleteQuest(quest);
+                    questSystem.CompleteQuest(quest);
                     questLogPanelController.RemoveQuestTitle(quest);
                     IsPanelOpened = false;
                 });
-
-                negativeButtonText.text = "Cancel";
-                negativeButton.onClick.AddListener(() =>
+                UpdateButtonState(negativeButton, negativeButtonText, "Cancel", () =>
                 {
-                    player.CancelQuest(quest);
+                    questSystem.CancelQuest(quest);
                     questLogPanelController.RemoveQuestTitle(quest);
                     IsPanelOpened = false;
                 });
@@ -125,6 +110,20 @@ public class QuestDescriptionPanelController : BaseWindow
     {
         positiveButtonText = positiveButton.GetComponentInChildren<Text>();
         negativeButtonText = negativeButton.GetComponentInChildren<Text>();
+    }
+
+    private void UpdateButtonState([NotNull] Button button,
+                                   [NotNull] Text buttonText,
+                                   [NotNull] string title,
+                                   [CanBeNull] UnityAction onClickListener = null,
+                                   bool isInteractable = true)
+    {
+        buttonText.text = title;
+        if (onClickListener != null)
+        {
+            button.onClick.AddListener(onClickListener);
+        }
+        button.interactable = isInteractable;
     }
 
     #endregion

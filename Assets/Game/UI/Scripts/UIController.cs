@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Game.Scripts.Quests;
+using JetBrains.Annotations;
 using Zenject;
 
 /// <summary>
