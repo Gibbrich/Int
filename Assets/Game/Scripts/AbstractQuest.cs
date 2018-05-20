@@ -24,22 +24,52 @@ public class AbstractQuest
 
     [SerializeField]
     private string description;
+    
+    /* todo    - for debug purposes added SerializeField attr. Remove
+     * @author - Артур
+     * @date   - 20.05.2018
+     * @time   - 12:50
+    */    
+    [SerializeField]
+    private State progressState = State.AVAILABLE_TO_PICK;
 
     #endregion
-    
+
     #region Properties
 
     public string Title
     {
         get { return title; }
-        set { title = value; }
     }
 
     public string Description
     {
         get { return description; }
-        set { description = value; }
     }
 
+    public State ProgressState
+    {
+        get { return progressState; }
+        set
+        {
+            progressState = value; 
+            ProgressStateChanged.Invoke(this);
+        }
+    }
+
+    public event Action<AbstractQuest> ProgressStateChanged = quest => { };
+
     #endregion
+
+    #region Public methods
+
+    #endregion
+
+    public enum State
+    {
+        AVAILABLE_TO_PICK,
+        IN_PROGRESS,
+        AVAILABLE_TO_COMPLETE,
+        COMPLETED
+    }
 }

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Game.Scripts
@@ -108,6 +109,12 @@ namespace Game.Scripts
 			{
 				Kill(obj);
 			}
+		}
+
+		[NotNull]
+		public List<T> getObjects()
+		{
+			return poolObjects;
 		}
 
 		private void Kill(T obj)

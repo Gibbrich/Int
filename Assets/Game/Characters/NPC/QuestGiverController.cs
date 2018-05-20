@@ -8,9 +8,24 @@ public class QuestGiverController : MonoBehaviour
 {
     #region Editor tweakable fields
     
+    [NotNull]
     [SerializeField]
     private List<AbstractQuest> quests;
     
+    #endregion
+    
+    #region Unity callbacks
+
+    private void Start()
+    {
+        quests.ForEach(quest => quest.ProgressStateChanged += OnQuestProgressStateChanged);
+    }
+
+    private void OnDestroy()
+    {
+        quests.ForEach(quest => quest.ProgressStateChanged -= OnQuestProgressStateChanged);
+    }
+
     #endregion
     
     #region Public methods
@@ -19,6 +34,19 @@ public class QuestGiverController : MonoBehaviour
     public AbstractQuest GetQuest()
     {
         return quests.IsEmpty() ? null : quests[0];
+    }
+    
+    #endregion
+    
+    #region Private methods
+
+    private void OnQuestProgressStateChanged(AbstractQuest quest)
+    {
+        if (quest.ProgressState == AbstractQuest.State.COMPLETED)
+        {
+            quests.Remove(quest);
+            quest.ProgressStateChanged -= OnQuestProgressStateChanged;
+        }
     }
     
     #endregion

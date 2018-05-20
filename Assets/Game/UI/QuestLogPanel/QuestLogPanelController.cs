@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Game.Scripts;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Networking;
 using Zenject;
@@ -31,7 +32,14 @@ public class QuestLogPanelController : BaseWindow
         get { return gameObject.activeSelf; }
         set
         {
-            ShowQuests();
+            if (value)
+            {
+                ShowQuests();
+            }
+            else
+            {
+                HideQuests();
+            }
             gameObject.SetActive(value);
         }
     }
@@ -46,6 +54,19 @@ public class QuestLogPanelController : BaseWindow
     private Pool<QuestTitleController> pool;
 
     #endregion
+    
+    #region Public methods
+
+    public void RemoveQuestTitle([NotNull] AbstractQuest quest)
+    {
+        QuestTitleController resultController = pool.getObjects().Find(controller => controller.Quest == quest);
+        if (resultController != null)
+        {
+            pool.Release(resultController);
+        }
+    }
+    
+    #endregion
 
     #region Private methods
 
@@ -55,12 +76,6 @@ public class QuestLogPanelController : BaseWindow
         Func<QuestTitleController> create = () =>
         {
             QuestTitleController questTitleController = factory.Create();
-
-            /* todo    - setup parent for instatiated QuestTitleController in Installer
-           * @author - Артур
-           * @date   - 19.05.2018
-           * @time   - 12:32
-          */
             questTitleController.gameObject.transform.SetParent(content.transform);
             return questTitleController;
         };
@@ -101,6 +116,13 @@ public class QuestLogPanelController : BaseWindow
             var position = new QuestTitleController.Position(OFFSET_LEFT, OFFSET_RIGHT, offset.x, offset.y);
             pool.GetNewObject().Init(quest, position);
         });
+    }
+
+    private void HideQuests()
+    {
+        pool
+            .getObjects()
+            .ForEach(controller => pool.Release(controller));
     }
 
     #endregion

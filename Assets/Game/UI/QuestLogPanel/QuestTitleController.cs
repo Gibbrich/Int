@@ -59,6 +59,10 @@ public class QuestTitleController : MonoBehaviour
     {
     }
 
+    /// <summary>
+    /// Used for storing <see cref="QuestTitleController"/> position in <see cref="QuestLogPanelController"/>
+    /// after instantiation.
+    /// </summary>
     public struct Position
     {
         private readonly float offsetLeft;

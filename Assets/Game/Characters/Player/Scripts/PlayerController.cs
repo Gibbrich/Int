@@ -29,11 +29,6 @@ public class PlayerController : MonoBehaviour
 
     #region Unity callbacks
 
-    // Use this for initialization
-    void Start()
-    {
-    }
-
     // Update is called once per frame
     void Update()
     {

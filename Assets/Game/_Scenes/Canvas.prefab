@@ -383,7 +383,7 @@ GameObject:
   - component: {fileID: 114891140296681034}
   - component: {fileID: 114088774678499642}
   m_Layer: 5
-  m_Name: CloseButton
+  m_Name: NegativeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -401,7 +401,7 @@ GameObject:
   - component: {fileID: 114931096139215568}
   - component: {fileID: 114831389117852218}
   m_Layer: 5
-  m_Name: AcceptButton
+  m_Name: PositivetButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1573,8 +1573,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: {fileID: 114448852610173482}
   description: {fileID: 114158281854515954}
-  acceptButton: {fileID: 114831389117852218}
-  closeButton: {fileID: 114088774678499642}
+  positiveButton: {fileID: 114831389117852218}
+  negativeButton: {fileID: 114088774678499642}
 --- !u!114 &114599779674705308
 MonoBehaviour:
   m_ObjectHideFlags: 1
