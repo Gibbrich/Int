@@ -16,7 +16,7 @@ public class PlayerInputSystem : MonoBehaviour
     #region Editor tweakable fields
 
     [SerializeField] [Tooltip("World units per second")]
-    private float movementSpeed = 30f;
+    private float movementSpeed = 5f;
 
     [Tooltip("Degrees per second")]
     [SerializeField] private float rotationSpeed = 90f;
@@ -34,6 +34,7 @@ public class PlayerInputSystem : MonoBehaviour
     private UIController uiController;
 
     private WeaponSystem weaponSystem;
+    private Animator animator;
     
     #endregion
 
@@ -42,13 +43,14 @@ public class PlayerInputSystem : MonoBehaviour
     private void Start()
     {
         weaponSystem = GetComponent<WeaponSystem>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        HandleMovingButtonsPressed();
         HandleRotationButtonsPressed();
+        HandleMovingButtonsPressed();
         HandleEscapeButtonClicked();
         HandleQuestButtonClicked();
         HandleMouseLeftButtonClick();
@@ -89,25 +91,38 @@ public class PlayerInputSystem : MonoBehaviour
         }
     }
     
-    private void HandleMovingButtonsPressed()
+    private void HandleRotationButtonsPressed()
     {
-        if (Input.GetAxisRaw("Horizontal") > 0)
+        float rotationAmplitude = Input.GetAxis("Horizontal");
+        animator.SetFloat("Turn", rotationAmplitude);
+        
+        if (rotationAmplitude > 0)
         {
             transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
         }
-        else if (Input.GetAxisRaw("Horizontal") < 0)
+        else if (rotationAmplitude < 0)
         {
             transform.Rotate(-1 * Vector3.up * rotationSpeed * Time.deltaTime);
         }
     }    
     
-    private void HandleRotationButtonsPressed()
+    private void HandleMovingButtonsPressed()
     {
-        if (Input.GetAxisRaw("Vertical") > 0)
+        /* todo    - for now, there is no moving back animation in animation controller,
+         * so moving back looks a little bit wierd. Do not step back! :D
+         * @author - Артур
+         * @date   - 21.05.2018
+         * @time   - 21:16
+        */
+        
+        float movementAmplitude = Input.GetAxis("Vertical");
+        animator.SetFloat("Forward", movementAmplitude);
+        
+        if (movementAmplitude > 0)
         {
             transform.position += transform.forward * Time.deltaTime * movementSpeed;
         }
-        else if (Input.GetAxisRaw("Vertical") < 0)
+        else if (movementAmplitude < 0)
         {
             transform.position -= transform.forward * Time.deltaTime * movementSpeed;
         }
