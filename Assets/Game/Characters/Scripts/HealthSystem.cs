@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Game.Characters.Scripts
 {
-    public class HealthSystem : MonoBehaviour, IHealthSystem
+    public class HealthSystem : MonoBehaviour
     {
         #region Editor tweakable fields
 
@@ -13,35 +13,53 @@ namespace Game.Characters.Scripts
         
         #endregion
         
-        #region Private fields
-
-        private IHealthSystemController healthSystemController;
-        
-        #endregion
-        
         #region Public methods
-
-        public bool TakeDamage(float amount)
+        
+        public HealthState TakeDamage(float amount)
         {
-            return healthSystemController.TakeDamage(amount);
+            health.CurrentValue -= amount;
+            return GetCurrentHealthState();
+        }
+
+        public HealthState GetCurrentHealthState()
+        {
+            return new HealthState(health.CurrentValue, health.MaxValue);
         }
 
         #endregion
+    }
+
+    public struct HealthState
+    {
+        #region Private fields
+
+        private readonly float currentHealth;
+        private readonly float maxHealth;
+
+        #endregion
         
-        #region Private methods
+        #region Properties
         
-        [Inject]
-        private void Init(IHealthSystemController healthSystemController)
+        public float CurrentHealth
         {
-            this.healthSystemController = healthSystemController;
-            healthSystemController.Init(this, health);
+            get { return currentHealth; }
+        }
+
+        public float MaxHealth
+        {
+            get { return maxHealth; }
         }        
         
         #endregion
-    }
 
-    public interface IHealthSystem : IBaseSystem
-    {
-        bool TakeDamage(float amount);
+        #region Public methods
+
+        public HealthState(float currentHealth, float maxHealth)
+        {
+            this.currentHealth = currentHealth;
+            this.maxHealth = maxHealth;
+        }
+
+        #endregion
     }
 }

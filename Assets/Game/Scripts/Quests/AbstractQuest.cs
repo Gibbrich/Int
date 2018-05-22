@@ -18,7 +18,7 @@ namespace Game.Scripts.Quests
     /// * Rewards
     /// * Dependencies (which quest giver belongs, preconditions etc.).
     /// 
-    /// After game initializing all quests should be injected in <see cref="QuestGiverController"/>
+    /// After game initializing all quests should be injected in <see cref="QuestGiverSystem"/>
     /// </summary> 
     [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public abstract class AbstractQuest : ScriptableObject

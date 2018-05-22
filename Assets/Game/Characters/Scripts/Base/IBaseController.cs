@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using UnityEngine;
+﻿using JetBrains.Annotations;
 
 /// <summary>
 /// This interface has the same functions as Controller in MVC pattern.

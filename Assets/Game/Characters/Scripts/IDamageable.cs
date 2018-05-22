@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Game.Characters.Scripts
 {
@@ -7,12 +8,7 @@ namespace Game.Characters.Scripts
     /// </summary>
     public interface IDamageable
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="amount">Is <see cref="Health.CurrentValue"/> is lower than 0</param>
-        /// <returns></returns>
-        bool TakeDamage(float amount);
+        HealthState TakeDamage(float amount);
         GameObject GetGameObject();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Game.Scripts;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
@@ -7,51 +8,55 @@ namespace Game.Characters.Scripts
 {
     [RequireComponent(typeof(Animator))]
     [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-    public class WeaponSystem : MonoBehaviour, IWeaponSystem
+    public class WeaponSystem : MonoBehaviour
     {
         #region Editor tweakable fields
 
         [NotNull]
         [SerializeField]
+        [Tooltip("Weapon object parent")]
         private Transform weaponSocket;
     
         #endregion
     
         #region Private fields
 
-        [NotNull]
-        private IWeaponSystemController weaponSystemController;
-
         [CanBeNull]
-        private GameObject currentWeapon;
+        private GameObject weaponObject;
+        
+        [CanBeNull]
+        private WeaponConfig weaponConfig;
 
         [NotNull]
         private Animator animator;
+        
+        [CanBeNull]
+        private IDamageable target;
+
+        private float lastAttackTime = 0;
 
         #endregion
-
+        
+        #region Unity callbacks
+        
         // Use this for initialization
         void Start()
         {
             animator = GetComponent<Animator>();
         }
-
-        // Update is called once per frame
-        void Update()
-        {
-        }
+        
+        #endregion
 
         #region Public methods
 
-        public void PutWeaponInHand(Weapon weapon)
+        public void PutWeaponInHand(WeaponConfig weaponConfig)
         {
-            weaponSystemController.SetWeapon(weapon);
+            this.weaponConfig = weaponConfig;
+            Destroy(weaponObject);
         
-            Destroy(currentWeapon);
-        
-            currentWeapon = Instantiate(weapon.Prefab, weaponSocket);
-            currentWeapon.transform.localPosition = weapon.Grip.localPosition;
-            currentWeapon.transform.localRotation = weapon.Grip.localRotation;
+            weaponObject = Instantiate(weaponConfig.Prefab, weaponSocket);
+            weaponObject.transform.localPosition = weaponConfig.Grip.localPosition;
+            weaponObject.transform.localRotation = weaponConfig.Grip.localRotation;
         }
 
         public void AttackAnimationStart(AnimationClip clip)
@@ -70,34 +75,51 @@ namespace Game.Characters.Scripts
 
         public void AttackAnimationEnds()
         {
-            weaponSystemController.DamageTarget();
+            DamageTarget();
         }
-
+        
+        /// <summary>
+        /// Attacking target divides in 3 steps:
+        /// * Check attack conditions and start attack animation <see cref="Attack"/>
+        /// * Attack animation plays <see cref="AttackAnimationStart"/>
+        /// * Attack animation ends <see cref="AttackAnimationEnds"/> and call <see cref="DamageTarget"/>
+        /// </summary>
+        /// <param name="target"></param>
         public void Attack(IDamageable target)
-        {
-            weaponSystemController.Attack(target);
+        {            
+            if (target != null &&
+                weaponConfig != null &&
+                Time.time - lastAttackTime > weaponConfig.Speed)
+            {
+                AttackAnimationStart(weaponConfig.AttackAnimations.getRandomItem());
+            }
         }
-
+        
+        public void SetTarget(IDamageable target)
+        {
+            this.target = target;
+        }
+        
         #endregion
         
         #region Private methods
         
-        [Inject]
-        private void Init(IWeaponSystemController weaponSystemController)
+        private void DamageTarget()
         {
-            this.weaponSystemController = weaponSystemController;
-            weaponSystemController.Init(this);
+            if (GetRangeToTarget(target.GetGameObject().transform.position) <= weaponConfig.AttackRange)
+            {
+                /* todo    - parametrize damage value
+                 * @author - Артур
+                 * @date   - 20.05.2018
+                 * @time   - 19:52
+                */                
+                target.TakeDamage(100);
+                lastAttackTime = Time.time;
+            }
+
+            target = null;
         }        
         
         #endregion
-    }
-
-    public interface IWeaponSystem: IBaseSystem
-    {
-        void PutWeaponInHand([NotNull] Weapon weapon);
-        void AttackAnimationStart([NotNull] AnimationClip clip);
-        float GetRangeToTarget(Vector3 targetPosition);
-        void AttackAnimationEnds();
-        void Attack(IDamageable target);
     }
 }

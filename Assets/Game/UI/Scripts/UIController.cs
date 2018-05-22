@@ -1,4 +1,5 @@
-﻿using Game.Scripts.Quests;
+﻿using Game.Characters.Scripts;
+using Game.Scripts.Quests;
 using JetBrains.Annotations;
 using Zenject;
 
@@ -17,6 +18,12 @@ public class UIController
 
     [Inject]
     private QuestDescriptionPanelController questDescriptionPanelController;
+
+    [Inject(Id = Installer.Identifiers.PLAYER_HEALTH_BAR)]
+    private HealthBarSystem playerHealthBarSystem;
+
+    [Inject(Id = Installer.Identifiers.TARGET_HEALTH_BAR)]
+    private HealthBarSystem targetHealthBarSystem;
 
     #endregion
     
@@ -60,6 +67,31 @@ public class UIController
     public void CloseQuestQuestDescriptionPanel()
     {
         questDescriptionPanelController.IsPanelOpened = false;
+    }
+
+    public HealthBarSystem GetTargetHealthBarSystem()
+    {
+        return targetHealthBarSystem;
+    }
+
+    public void ShowTargetHealthBar()
+    {
+        targetHealthBarSystem.Show();
+    }
+
+    public void HideTargetHealthBar()
+    {
+        targetHealthBarSystem.Hide();
+    }
+    
+    public void UpdateTargetHealthBarValues(float currentHealth, float maxHealth)
+    {
+        targetHealthBarSystem.OnHealthChanged(currentHealth, maxHealth);
+    }
+
+    public void UpdatePlayerHealthBarValues(float currentHealth, float maxHealth)
+    {
+        playerHealthBarSystem.OnHealthChanged(currentHealth, maxHealth);
     }
 
     #endregion

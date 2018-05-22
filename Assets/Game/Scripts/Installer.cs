@@ -19,12 +19,15 @@ public class Installer : MonoInstaller<Installer>
         Container.Bind<GameController>().AsSingle();
         Container.Bind<UIController>().AsSingle();
         Container.Bind<QuestSystem>().AsSingle();
-        
-        Container.Bind<IWeaponSystemController>().To<WeaponSystemController>().AsTransient();
-        Container.Bind<IHealthSystemController>().To<HealthSystemController>().AsTransient();
 
         Container
             .BindFactory<QuestTitleController, QuestTitleController.Factory>()
             .FromComponentInNewPrefab(questTitleControllerPrefab);
+    }
+    
+    public static class Identifiers
+    {
+        public const string PLAYER_HEALTH_BAR = "PLAYER_HEALTH_BAR";
+        public const string TARGET_HEALTH_BAR = "TARGET_HEALTH_BAR";
     }
 }

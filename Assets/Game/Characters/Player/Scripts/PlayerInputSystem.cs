@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Game.Characters.Player.Scripts;
 using Game.Characters.Scripts;
 using Game.Scripts.Quests;
 using JetBrains.Annotations;
@@ -53,43 +54,11 @@ public class PlayerInputSystem : MonoBehaviour
         HandleMovingButtonsPressed();
         HandleEscapeButtonClicked();
         HandleQuestButtonClicked();
-        HandleMouseLeftButtonClick();
     }
 
     #endregion
     
     #region Private methods
-    
-    private void HandleMouseLeftButtonClick()
-    {
-        // only if mouse not over ui
-        if (Input.GetMouseButtonDown(MOUSE_LEFT_BUTTON) && !EventSystem.current.IsPointerOverGameObject()) 
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            LayerMask interactableLayerMask = 1 << INTERACTABLE_LAYER;
-            RaycastHit hitInfo;
-            bool wasHit = Physics.Raycast(ray, out hitInfo, MAX_RAYCAST_DEPTH, interactableLayerMask);
-            if (wasHit)
-            {
-                NPCActor npcActor = hitInfo.collider.GetComponent<NPCActor>();
-                if (npcActor)
-                {
-                    AbstractQuest abstractQuest = npcActor.Interact();
-                    if (abstractQuest != null)
-                    {
-                        uiController.OpenQuestDescriptionPanel(abstractQuest);
-                    }
-                    return;
-                }
-
-                IDamageable target = hitInfo.collider.GetComponent<IDamageable>();
-                if (target != null)
-                {
-                    weaponSystem.Attack(target);
-                }
-            }
-        }
-    }
     
     private void HandleRotationButtonsPressed()
     {

@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using ModestTree;
 using UnityEngine;
 
-public class QuestGiverController : MonoBehaviour
+public class QuestGiverSystem : MonoBehaviour
 {
     #region Editor tweakable fields
     

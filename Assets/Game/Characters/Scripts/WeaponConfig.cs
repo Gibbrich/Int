@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon: ScriptableObject
+public class WeaponConfig: ScriptableObject
 {
     #region Private fields
 
