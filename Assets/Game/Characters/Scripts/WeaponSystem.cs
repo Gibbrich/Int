@@ -29,6 +29,9 @@ namespace Game.Characters.Scripts
 
         [NotNull]
         private Animator animator;
+
+        [NotNull]
+        private AnimatorOverrideController animatorOverrideController;
         
         [CanBeNull]
         private IDamageable target;
@@ -43,6 +46,9 @@ namespace Game.Characters.Scripts
         void Start()
         {
             animator = GetComponent<Animator>();
+            
+            animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+            animator.runtimeAnimatorController = animatorOverrideController;
         }
         
         #endregion
@@ -61,11 +67,8 @@ namespace Game.Characters.Scripts
 
         public void AttackAnimationStart(AnimationClip clip)
         {
-            /* todo    - implement using animator
-             * @author - Артур
-             * @date   - 20.05.2018
-             * @time   - 18:52
-            */            
+            animatorOverrideController["DefaultAttack"] = clip;
+            animator.SetTrigger("OnAttack");
         }
 
         public float GetRangeToTarget(Vector3 targetPosition)
@@ -73,25 +76,29 @@ namespace Game.Characters.Scripts
             return Vector3.Distance(gameObject.transform.position, targetPosition);
         }
 
+        /// <summary>
+        /// Called by <see cref="animator"/>
+        /// </summary>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void AttackAnimationEnds()
         {
             DamageTarget();
         }
-        
+
         /// <summary>
         /// Attacking target divides in 3 steps:
         /// * Check attack conditions and start attack animation <see cref="Attack"/>
         /// * Attack animation plays <see cref="AttackAnimationStart"/>
         /// * Attack animation ends <see cref="AttackAnimationEnds"/> and call <see cref="DamageTarget"/>
         /// </summary>
-        /// <param name="target"></param>
-        public void Attack(IDamageable target)
+        public void Attack()
         {            
             if (target != null &&
                 weaponConfig != null &&
                 Time.time - lastAttackTime > weaponConfig.Speed)
             {
-                AttackAnimationStart(weaponConfig.AttackAnimations.getRandomItem());
+                AttackAnimationStart(weaponConfig.Animations.AttackAnimations.getRandomItem());
+                lastAttackTime = Time.time;
             }
         }
         
@@ -114,10 +121,7 @@ namespace Game.Characters.Scripts
                  * @time   - 19:52
                 */                
                 target.TakeDamage(100);
-                lastAttackTime = Time.time;
             }
-
-            target = null;
         }        
         
         #endregion

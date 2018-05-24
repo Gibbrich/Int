@@ -1,11 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Game.Characters.Animations.Scripts;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "RPG/Weapons/WeaponConfig")]
 public class WeaponConfig: ScriptableObject
 {
-    #region Private fields
-
+    #region Editor tweakable fields
+    
     [SerializeField]
     private GameObject prefab;
 
@@ -14,7 +15,7 @@ public class WeaponConfig: ScriptableObject
     private Transform grip;
 
     [SerializeField]
-    private List<AnimationClip> attackAnimations;
+    private WeaponAnimations animations;
 
     [SerializeField]
     private float damage;
@@ -24,16 +25,11 @@ public class WeaponConfig: ScriptableObject
 
     [SerializeField]
     private float attackRange;
-
+    
     #endregion
 
     #region Properties
     
-    public List<AnimationClip> AttackAnimations
-    {
-        get { return attackAnimations; }
-    }
-
     public float Damage
     {
         get { return damage; }
@@ -57,6 +53,11 @@ public class WeaponConfig: ScriptableObject
     public Transform Grip
     {
         get { return grip; }
+    }
+
+    public WeaponAnimations Animations
+    {
+        get { return animations; }
     }
 
     #endregion

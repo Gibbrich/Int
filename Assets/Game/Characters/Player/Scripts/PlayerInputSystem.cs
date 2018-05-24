@@ -54,11 +54,30 @@ public class PlayerInputSystem : MonoBehaviour
         HandleMovingButtonsPressed();
         HandleEscapeButtonClicked();
         HandleQuestButtonClicked();
+
+        HandlePlayerRightMouseButtonClicked();
     }
 
     #endregion
     
+    #region Public methods
+
+    public void OnInteraction()
+    {
+        animator.SetTrigger("OnInteraction");
+    }
+    
+    #endregion
+    
     #region Private methods
+    
+    private void HandlePlayerRightMouseButtonClicked()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            weaponSystem.Attack();
+        }
+    }
     
     private void HandleRotationButtonsPressed()
     {

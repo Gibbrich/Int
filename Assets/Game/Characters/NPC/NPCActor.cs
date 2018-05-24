@@ -1,4 +1,5 @@
-﻿using Game.Characters.Scripts;
+﻿using Game.Characters.Player.Scripts;
+using Game.Characters.Scripts;
 using Game.Scripts.Quests;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -18,6 +19,10 @@ public class NPCActor : MonoBehaviour, IActor, IInteractable<object, AbstractQue
     [NotNull]
     [Inject]
     private UIController uiController;
+
+    [NotNull]
+    [Inject]
+    private PlayerActor player;
 
     #endregion
 
@@ -56,6 +61,7 @@ public class NPCActor : MonoBehaviour, IActor, IInteractable<object, AbstractQue
             if (quest != null)
             {
                 uiController.OpenQuestDescriptionPanel(quest);
+                player.OnInteraction(this);
             }
         }
     }
