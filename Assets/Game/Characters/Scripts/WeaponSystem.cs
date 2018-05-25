@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Game.Characters.Scripts
 {
-    [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(AnimationsSystem))]
     [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class WeaponSystem : MonoBehaviour
     {
@@ -16,6 +16,10 @@ namespace Game.Characters.Scripts
         [SerializeField]
         [Tooltip("Weapon object parent")]
         private Transform weaponSocket;
+        
+        [NotNull]
+        [SerializeField]
+        private WeaponConfig weaponConfig;
     
         #endregion
     
@@ -23,15 +27,9 @@ namespace Game.Characters.Scripts
 
         [CanBeNull]
         private GameObject weaponObject;
-        
-        [CanBeNull]
-        private WeaponConfig weaponConfig;
 
         [NotNull]
-        private Animator animator;
-
-        [NotNull]
-        private AnimatorOverrideController animatorOverrideController;
+        private AnimationsSystem animationsSystem;
         
         [CanBeNull]
         private IDamageable target;
@@ -45,10 +43,8 @@ namespace Game.Characters.Scripts
         // Use this for initialization
         void Start()
         {
-            animator = GetComponent<Animator>();
-            
-            animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
-            animator.runtimeAnimatorController = animatorOverrideController;
+            animationsSystem = GetComponent<AnimationsSystem>();
+            animationsSystem.UpdateAnimationsSet(weaponConfig.Animations);
         }
         
         #endregion
@@ -58,17 +54,20 @@ namespace Game.Characters.Scripts
         public void PutWeaponInHand(WeaponConfig weaponConfig)
         {
             this.weaponConfig = weaponConfig;
+            animationsSystem.UpdateAnimationsSet(weaponConfig.Animations);
+            
             Destroy(weaponObject);
-        
-            weaponObject = Instantiate(weaponConfig.Prefab, weaponSocket);
-            weaponObject.transform.localPosition = weaponConfig.Grip.localPosition;
-            weaponObject.transform.localRotation = weaponConfig.Grip.localRotation;
-        }
 
-        public void AttackAnimationStart(AnimationClip clip)
-        {
-            animatorOverrideController["DefaultAttack"] = clip;
-            animator.SetTrigger("OnAttack");
+            if (weaponConfig.Prefab != null)
+            {
+                weaponObject = Instantiate(weaponConfig.Prefab, weaponSocket);
+
+                if (weaponConfig.Grip != null)
+                {
+                    weaponObject.transform.localPosition = weaponConfig.Grip.localPosition;
+                    weaponObject.transform.localRotation = weaponConfig.Grip.localRotation;
+                }
+            }
         }
 
         public float GetRangeToTarget(Vector3 targetPosition)
@@ -77,7 +76,7 @@ namespace Game.Characters.Scripts
         }
 
         /// <summary>
-        /// Called by <see cref="animator"/>
+        /// Called by <see cref="Animator"/>
         /// </summary>
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void AttackAnimationEnds()
@@ -88,16 +87,15 @@ namespace Game.Characters.Scripts
         /// <summary>
         /// Attacking target divides in 3 steps:
         /// * Check attack conditions and start attack animation <see cref="Attack"/>
-        /// * Attack animation plays <see cref="AttackAnimationStart"/>
+        /// * Attack animation plays <see cref="AnimationsSystem.PlayAttackAnimation"/>
         /// * Attack animation ends <see cref="AttackAnimationEnds"/> and call <see cref="DamageTarget"/>
         /// </summary>
         public void Attack()
         {            
             if (target != null &&
-                weaponConfig != null &&
                 Time.time - lastAttackTime > weaponConfig.Speed)
             {
-                AttackAnimationStart(weaponConfig.Animations.AttackAnimations.getRandomItem());
+                animationsSystem.PlayAttackAnimation();
                 lastAttackTime = Time.time;
             }
         }
@@ -114,13 +112,8 @@ namespace Game.Characters.Scripts
         private void DamageTarget()
         {
             if (GetRangeToTarget(target.GetGameObject().transform.position) <= weaponConfig.AttackRange)
-            {
-                /* todo    - parametrize damage value
-                 * @author - Артур
-                 * @date   - 20.05.2018
-                 * @time   - 19:52
-                */                
-                target.TakeDamage(100);
+            {             
+                target.TakeDamage(weaponConfig.Damage);
             }
         }        
         

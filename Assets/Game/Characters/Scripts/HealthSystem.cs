@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
 
 namespace Game.Characters.Scripts
 {
+    [RequireComponent(typeof(AnimationsSystem))]
+    [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class HealthSystem : MonoBehaviour
     {
         #region Editor tweakable fields
@@ -13,11 +17,37 @@ namespace Game.Characters.Scripts
         
         #endregion
         
+        #region Private fields
+
+        [NotNull]
+        private AnimationsSystem animationsSystem;
+        
+        #endregion
+        
+        #region Unity callbacks
+
+        private void Start()
+        {
+            animationsSystem = GetComponent<AnimationsSystem>();
+        }
+
+        #endregion
+        
         #region Public methods
         
         public HealthState TakeDamage(float amount)
         {
             health.CurrentValue -= amount;
+
+            if (health.CurrentValue <= 0)
+            {
+                animationsSystem.PlayDeathAnimation();
+            }
+            else
+            {
+                animationsSystem.PlayHitAnimation();
+            }
+            
             return GetCurrentHealthState();
         }
 

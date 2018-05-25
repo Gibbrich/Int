@@ -11,6 +11,7 @@ namespace Game.Characters.Player.Scripts
     [RequireComponent(typeof(HealthSystem))]
     [RequireComponent(typeof(PlayerInputSystem))]
     [RequireComponent(typeof(WeaponSystem))]
+    [RequireComponent(typeof(AnimationsSystem))]
     [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class PlayerActor : MonoBehaviour, IActor, IDamageable
     {
@@ -25,6 +26,9 @@ namespace Game.Characters.Player.Scripts
 
         [NotNull]
         private PlayerInputSystem inputSystem;
+
+        [NotNull]
+        private AnimationsSystem animationsSystem;
 
         [NotNull]
         private WeaponSystem weaponSystem;
@@ -73,10 +77,11 @@ namespace Game.Characters.Player.Scripts
             if (interactable is IInteractable<object, AbstractQuest>)
             {
                 inputSystem.OnInteraction();
+                animationsSystem.PlayInteractAnimation();
             }
             else if (interactable is IInteractable<object, WeaponConfig>)
             {
-                var weaponPickUp = interactable as IInteractable<object, WeaponConfig>;
+                var weaponPickUp = (IInteractable<object, WeaponConfig>) interactable;
                 weaponSystem.PutWeaponInHand(weaponPickUp.Interact());
             }
             

@@ -1,4 +1,5 @@
-﻿using Game.Characters.Player.Scripts;
+﻿using System.Diagnostics.CodeAnalysis;
+using Game.Characters.Player.Scripts;
 using Game.Characters.Scripts;
 using Game.Scripts.Quests;
 using JetBrains.Annotations;
@@ -9,6 +10,7 @@ using Zenject;
 /// <summary>
 /// This class should be used as interface for interactions with any NPC. 
 /// </summary>
+[SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
 public class NPCActor : MonoBehaviour, IActor, IInteractable<object, AbstractQuest>, IPointerClickHandler
 {
     #region Private fields

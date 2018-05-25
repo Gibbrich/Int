@@ -11,7 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15722ec66cfef846ab1d35585c7dbf0, type: 3}
   m_Name: RifleAnimations
   m_EditorClassIdentifier: 
-  attackAnimations: []
+  attackAnimations:
+  - {fileID: 7400000, guid: 36b7c3aada657af4ab2e05f079d7e464, type: 3}
   takeHitAnimations: []
-  interactAnimations: []
-  deathAnimations: []
+  interactAnimations:
+  - {fileID: 7400000, guid: 35aeafc9542485f428531abd8bc0553d, type: 3}
+  deathAnimations:
+  - {fileID: 7400000, guid: 85f9e92f60334cd41bd11907b3963d28, type: 3}

@@ -7,7 +7,7 @@ namespace Game.Scripts
     public static class ListUtils
     {
         [NotNull]
-        public static T getRandomItem<T>(this List<T> list)
+        public static T GetRandomItem<T>(this List<T> list)
         {
             int id = Random.Range(0, list.Count);
             return list[id];

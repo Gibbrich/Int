@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 23462460303688656}
   - component: {fileID: 114970031783755536}
   - component: {fileID: 114967866473901870}
+  - component: {fileID: 95174224147838762}
+  - component: {fileID: 114226918527263976}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -83,6 +85,34 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1803009706514364}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!95 &95174224147838762
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1803009706514364}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114226918527263976
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1803009706514364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 950a71afe82248a4e92f83cc47849bd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114967866473901870
 MonoBehaviour:
   m_ObjectHideFlags: 1

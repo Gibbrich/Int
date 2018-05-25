@@ -1,19 +1,25 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Game.Characters.Animations.Scripts;
+using JetBrains.Annotations;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "RPG/Weapons/WeaponConfig")]
+[SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
 public class WeaponConfig: ScriptableObject
 {
     #region Editor tweakable fields
     
+    [CanBeNull]
     [SerializeField]
     private GameObject prefab;
 
+    [CanBeNull]
     [SerializeField]
     [Tooltip("Used for tuning correct weapon displaying")]
     private Transform grip;
 
+    [NotNull]
     [SerializeField]
     private WeaponAnimations animations;
 
@@ -45,16 +51,19 @@ public class WeaponConfig: ScriptableObject
         get { return attackRange; }
     }
 
+    [CanBeNull]
     public GameObject Prefab
     {
         get { return prefab; }
     }
 
+    [CanBeNull]
     public Transform Grip
     {
         get { return grip; }
     }
 
+    [NotNull]
     public WeaponAnimations Animations
     {
         get { return animations; }
