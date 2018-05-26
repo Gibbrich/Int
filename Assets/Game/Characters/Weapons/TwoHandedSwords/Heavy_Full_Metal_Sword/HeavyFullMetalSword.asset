@@ -13,11 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 1623649799919170, guid: fb44a0d9eddff96439a10159e6b61cfb, type: 2}
   grip: {fileID: 4932177559571098, guid: 2b4e6664bf425c54298f6480d9b78f6f, type: 2}
-  attackAnimations:
-  - {fileID: 7400000, guid: dce280ced5e006c4cb0eb0fab2f51b75, type: 3}
-  - {fileID: 7400000, guid: 7b5b17e2d42e0424f9c36012595dc9b6, type: 3}
-  - {fileID: 7400000, guid: 018ce46eeecfeae4abb8016f2c6841ca, type: 3}
   animations: {fileID: 11400000, guid: 50eae0c96486c3e48b68b88657bf8214, type: 2}
-  damage: 10
+  damage: 50
   speed: 2
   attackRange: 10

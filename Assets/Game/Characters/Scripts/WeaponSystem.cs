@@ -70,11 +70,6 @@ namespace Game.Characters.Scripts
             }
         }
 
-        public float GetRangeToTarget(Vector3 targetPosition)
-        {
-            return Vector3.Distance(gameObject.transform.position, targetPosition);
-        }
-
         /// <summary>
         /// Called by <see cref="Animator"/>
         /// </summary>
@@ -93,6 +88,7 @@ namespace Game.Characters.Scripts
         public void Attack()
         {            
             if (target != null &&
+                target.IsAlive() &&
                 Time.time - lastAttackTime > weaponConfig.Speed)
             {
                 animationsSystem.PlayAttackAnimation();
@@ -100,9 +96,14 @@ namespace Game.Characters.Scripts
             }
         }
         
-        public void SetTarget(IDamageable target)
+        public void SetTarget([CanBeNull] IDamageable target)
         {
             this.target = target;
+        }
+
+        public float GetWeaponAttackRadius()
+        {
+            return weaponConfig.AttackRange;
         }
         
         #endregion
@@ -115,7 +116,12 @@ namespace Game.Characters.Scripts
             {             
                 target.TakeDamage(weaponConfig.Damage);
             }
-        }        
+        }
+        
+        private float GetRangeToTarget(Vector3 targetPosition)
+        {
+            return Vector3.Distance(gameObject.transform.position, targetPosition);
+        }
         
         #endregion
     }

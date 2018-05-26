@@ -29,7 +29,7 @@ public class EnemyActor : MonoBehaviour, IActor, IDamageable, IPointerClickHandl
     #region Unity callbacks
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         healthSystem = GetComponent<HealthSystem>();
     }
@@ -43,6 +43,11 @@ public class EnemyActor : MonoBehaviour, IActor, IDamageable, IPointerClickHandl
         HealthState healthState = healthSystem.TakeDamage(amount);
         uiController.UpdateTargetHealthBarValues(healthState.CurrentHealth, healthState.MaxHealth);
         return healthState;
+    }
+
+    public HealthState GetCurrentHealthState()
+    {
+        return healthSystem.GetCurrentHealthState();
     }
 
     public GameObject GetGameObject()

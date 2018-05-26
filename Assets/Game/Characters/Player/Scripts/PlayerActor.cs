@@ -58,8 +58,13 @@ namespace Game.Characters.Player.Scripts
         public HealthState TakeDamage(float amount)
         {
             HealthState healthState = healthSystem.TakeDamage(amount);
-            uiController.UpdateTargetHealthBarValues(healthState.CurrentHealth, healthState.MaxHealth);
+            uiController.UpdatePlayerHealthBarValues(healthState.CurrentHealth, healthState.MaxHealth);
             return healthState;
+        }
+
+        public HealthState GetCurrentHealthState()
+        {
+            return healthSystem.GetCurrentHealthState();
         }
 
         public GameObject GetGameObject()

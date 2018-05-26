@@ -24,6 +24,7 @@ public class AnimationsSystem : MonoBehaviour
     private Animator animator;
 
     [NotNull]
+    [SerializeField]
     private AnimatorOverrideController animatorOverrideController;
 
     [CanBeNull]
@@ -38,7 +39,7 @@ public class AnimationsSystem : MonoBehaviour
     {
         animator = GetComponent<Animator>();
             
-        animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+//        animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = animatorOverrideController;
     }
     

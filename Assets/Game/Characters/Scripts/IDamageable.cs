@@ -9,6 +9,15 @@ namespace Game.Characters.Scripts
     public interface IDamageable
     {
         HealthState TakeDamage(float amount);
+        HealthState GetCurrentHealthState();
         GameObject GetGameObject();
+    }
+
+    public static class IDamageableExtensions
+    {
+        public static bool IsAlive(this IDamageable damageable)
+        {
+            return damageable.GetCurrentHealthState().CurrentHealth > 0;
+        }
     }
 }
