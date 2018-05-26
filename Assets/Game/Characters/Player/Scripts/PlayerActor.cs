@@ -46,6 +46,7 @@ namespace Game.Characters.Player.Scripts
             healthSystem = GetComponent<HealthSystem>();
             inputSystem = GetComponent<PlayerInputSystem>();
             weaponSystem = GetComponent<WeaponSystem>();
+            animationsSystem = GetComponent<AnimationsSystem>();
 
             HealthState healthState = healthSystem.GetCurrentHealthState();
             uiController.UpdatePlayerHealthBarValues(healthState.CurrentHealth, healthState.MaxHealth);
@@ -58,6 +59,14 @@ namespace Game.Characters.Player.Scripts
         public HealthState TakeDamage(float amount)
         {
             HealthState healthState = healthSystem.TakeDamage(amount);
+            if (healthState.CurrentHealth <= 0)
+            {
+                animationsSystem.PlayDeathAnimation();
+            }
+            else
+            {
+                animationsSystem.PlayHitAnimation();
+            }
             uiController.UpdatePlayerHealthBarValues(healthState.CurrentHealth, healthState.MaxHealth);
             return healthState;
         }

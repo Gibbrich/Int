@@ -23,6 +23,9 @@ public class EnemyActor : MonoBehaviour, IActor, IDamageable, IPointerClickHandl
 
     [Inject]
     private UIController uiController;
+    
+    [NotNull]
+    private AnimationsSystem animationsSystem;
 
     #endregion
 
@@ -32,6 +35,7 @@ public class EnemyActor : MonoBehaviour, IActor, IDamageable, IPointerClickHandl
     void Awake()
     {
         healthSystem = GetComponent<HealthSystem>();
+        animationsSystem = GetComponent<AnimationsSystem>();
     }
 
     #endregion
@@ -41,6 +45,16 @@ public class EnemyActor : MonoBehaviour, IActor, IDamageable, IPointerClickHandl
     public HealthState TakeDamage(float amount)
     {
         HealthState healthState = healthSystem.TakeDamage(amount);
+        
+        if (healthState.CurrentHealth <= 0)
+        {
+            animationsSystem.PlayDeathAnimation();
+        }
+        else
+        {
+            animationsSystem.PlayHitAnimation();
+        }
+        
         uiController.UpdateTargetHealthBarValues(healthState.CurrentHealth, healthState.MaxHealth);
         return healthState;
     }

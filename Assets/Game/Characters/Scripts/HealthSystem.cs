@@ -17,37 +17,11 @@ namespace Game.Characters.Scripts
         
         #endregion
         
-        #region Private fields
-
-        [NotNull]
-        private AnimationsSystem animationsSystem;
-        
-        #endregion
-        
-        #region Unity callbacks
-
-        private void Start()
-        {
-            animationsSystem = GetComponent<AnimationsSystem>();
-        }
-
-        #endregion
-        
         #region Public methods
         
         public HealthState TakeDamage(float amount)
         {
-            health.CurrentValue -= amount;
-
-            if (health.CurrentValue <= 0)
-            {
-                animationsSystem.PlayDeathAnimation();
-            }
-            else
-            {
-                animationsSystem.PlayHitAnimation();
-            }
-            
+            health.CurrentValue -= amount;            
             return GetCurrentHealthState();
         }
 

@@ -73,6 +73,9 @@ namespace Game.Characters.Enemies
         [NotNull]
         private IDamageable self;
 
+        [NotNull]
+        private Character character;
+
         #endregion
 
         #region Unity callbacks
@@ -85,6 +88,7 @@ namespace Game.Characters.Enemies
             navigationAgent = GetComponent<NavMeshAgent>();
             initialPosition = transform.position;
             self = GetComponent<IDamageable>();
+            character = GetComponent<Character>();
 
             stateMachine.AddState(EnemyState.IDLE, OnIdleStart, OnIdleUpdate);
             stateMachine.AddState(EnemyState.ATTACKING, OnAttackStart, OnAttackUpdate, OnAttackStop);
@@ -131,7 +135,9 @@ namespace Game.Characters.Enemies
         {
             if (self.IsAlive())
             {
-                navigationAgent.SetDestination(initialPosition);
+                character.SetDestination(initialPosition);
+//                navigationAgent.stoppingDistance = 0;
+//                navigationAgent.SetDestination(initialPosition);
             }
         }
 
@@ -141,6 +147,7 @@ namespace Game.Characters.Enemies
                 IsPlayerWithinAggroRadius() 
                 && player.IsAlive())
             {
+//                navigationAgent.stoppingDistance = waypointTolerance;
                 stateMachine.CurrentState = EnemyState.CHASING;
             }
         }
@@ -180,7 +187,9 @@ namespace Game.Characters.Enemies
 
         private void OnPatrolStart()
         {
-            navigationAgent.SetDestination(patrolPath.GetTargetWaypoint());
+            character.SetDestination(patrolPath.GetTargetWaypoint());
+//            navigationAgent.stoppingDistance = 0;
+//            navigationAgent.SetDestination(patrolPath.GetTargetWaypoint());
         }
 
         private void OnPatrolUpdate()
@@ -194,7 +203,8 @@ namespace Game.Characters.Enemies
             if (Vector3.Distance(patrolPath.GetTargetWaypoint(), transform.position) <= waypointTolerance)
             {
                 patrolPath.OnTargetWaypointReached();
-                navigationAgent.SetDestination(patrolPath.GetTargetWaypoint());
+                character.SetDestination(patrolPath.GetTargetWaypoint());
+//                navigationAgent.SetDestination(patrolPath.GetTargetWaypoint());
             }
         }
 
@@ -202,11 +212,14 @@ namespace Game.Characters.Enemies
         {
             if (IsPlayerWithinAttackRadius())
             {
+                navigationAgent.isStopped = true;
+                navigationAgent.ResetPath();
                 stateMachine.CurrentState = EnemyState.ATTACKING;
             }
             else if (IsPlayerWithinAggroRadius())
             {
-                navigationAgent.SetDestination(player.transform.position);
+                character.SetDestination(player.transform.position, waypointTolerance);
+//                navigationAgent.SetDestination(player.transform.position);
             }
             else
             {

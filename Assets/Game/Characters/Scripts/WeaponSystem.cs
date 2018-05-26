@@ -112,9 +112,12 @@ namespace Game.Characters.Scripts
         
         private void DamageTarget()
         {
-            if (GetRangeToTarget(target.GetGameObject().transform.position) <= weaponConfig.AttackRange)
-            {             
-                target.TakeDamage(weaponConfig.Damage);
+            if (target != null)
+            {
+                if (GetRangeToTarget(target.GetGameObject().transform.position) <= weaponConfig.AttackRange)
+                {             
+                    target.TakeDamage(weaponConfig.Damage);
+                }
             }
         }
         
