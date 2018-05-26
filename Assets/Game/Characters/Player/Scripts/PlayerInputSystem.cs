@@ -124,6 +124,11 @@ public class PlayerInputSystem : MonoBehaviour
             {
                 uiController.CloseAllUIPanels();
             }
+            else if (uiController.IsTargetHealthBarVisible())
+            {
+                uiController.HideTargetHealthBar();
+                weaponSystem.SetTarget(null);
+            }
             else
             {
                 gameController.IsGamePaused = !gameController.IsGamePaused;

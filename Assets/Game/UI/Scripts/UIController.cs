@@ -74,6 +74,11 @@ public class UIController
         return targetHealthBarSystem;
     }
 
+    public bool IsTargetHealthBarVisible()
+    {
+        return targetHealthBarSystem.IsVisible();
+    }
+
     public void ShowTargetHealthBar()
     {
         targetHealthBarSystem.Show();

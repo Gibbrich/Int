@@ -1,24 +1,24 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Game.Characters.Player.Scripts;
 using Game.Scripts;
 using Game.Scripts.Quests;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Networking;
+using UnityEngine.UI;
 using Zenject;
 
+[SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
 public class QuestLogPanelController : BaseWindow
 {
     /* todo    - hardcoded values. Change to parametrized
      * @author - Артур
      * @date   - 19.05.2018
      * @time   - 16:13
-    */    
+    */
     private const float OFFSET_LEFT = 10;
     private const float OFFSET_RIGHT = -10;
-    
+
     #region Editor tweakable fields
 
     [Tooltip("Host for quest tittle items")]
@@ -26,7 +26,7 @@ public class QuestLogPanelController : BaseWindow
     private GameObject content;
 
     #endregion
-    
+
     #region Properties
 
     public override bool IsPanelOpened
@@ -42,6 +42,7 @@ public class QuestLogPanelController : BaseWindow
             {
                 HideQuests();
             }
+
             gameObject.SetActive(value);
         }
     }
@@ -50,13 +51,28 @@ public class QuestLogPanelController : BaseWindow
 
     #region Private fields
 
+    [NotNull]
     [Inject]
     private QuestSystem questSystem;
 
+    [NotNull]
     private Pool<QuestTitleController> pool;
 
+    [NotNull]
+    private Button closeButton;
+
     #endregion
-    
+
+    #region Unity callbacks
+
+    private void Start()
+    {
+        closeButton = GetComponentInChildren<Button>();
+        closeButton.onClick.AddListener(() => IsPanelOpened = false);
+    }
+
+    #endregion
+
     #region Public methods
 
     public void RemoveQuestTitle([NotNull] AbstractQuest quest)
@@ -67,7 +83,7 @@ public class QuestLogPanelController : BaseWindow
             pool.Release(resultController);
         }
     }
-    
+
     #endregion
 
     #region Private methods
@@ -104,7 +120,7 @@ public class QuestLogPanelController : BaseWindow
      * @author - Артур
      * @date   - 19.05.2018
      * @time   - 16:26
-    */    
+    */
     private Vector2 GetPosition()
     {
         return new Vector2(-5, -35);

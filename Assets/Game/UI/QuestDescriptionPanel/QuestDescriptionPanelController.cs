@@ -29,9 +29,13 @@ public class QuestDescriptionPanelController : BaseWindow
     [SerializeField]
     private Button negativeButton;
 
+    [NotNull]
+    [SerializeField]
+    private Button closeButton;
+
     #endregion
 
-    #region Private methods
+    #region Private fields
 
     [NotNull]
     [Inject]
@@ -47,12 +51,36 @@ public class QuestDescriptionPanelController : BaseWindow
     [NotNull]
     private Text negativeButtonText;
 
+    [CanBeNull]
+    private RectTransform rectTransform;
+
+    #endregion
+    
+    #region Unity callbacks
+
+    private void Start()
+    {
+        closeButton.onClick.AddListener(() => IsPanelOpened = false);
+        InitRectTransformIfNeed();
+    }
+
     #endregion
 
     #region Public methods
 
     public void Open([NotNull] AbstractQuest quest)
     {
+        InitRectTransformIfNeed();
+        
+        if (questLogPanelController.IsPanelOpened)
+        {
+            rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 298, 300);
+        }
+        else
+        {
+            rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, 300);
+        }
+        
         title.text = quest.Title;
         description.text = quest.Description;
 
@@ -97,7 +125,7 @@ public class QuestDescriptionPanelController : BaseWindow
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
+        
         IsPanelOpened = true;
     }
 
@@ -124,6 +152,14 @@ public class QuestDescriptionPanelController : BaseWindow
             button.onClick.AddListener(onClickListener);
         }
         button.interactable = isInteractable;
+    }
+
+    private void InitRectTransformIfNeed()
+    {
+        if (rectTransform == null)
+        {
+            rectTransform = GetComponent<RectTransform>();
+        }
     }
 
     #endregion

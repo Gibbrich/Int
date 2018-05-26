@@ -45,6 +45,11 @@ public class HealthBarSystem : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    public bool IsVisible()
+    {
+        return gameObject.activeSelf;
+    }
     
     #endregion
 }
