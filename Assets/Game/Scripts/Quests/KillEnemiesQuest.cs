@@ -1,85 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using JetBrains.Annotations;
+using ModestTree;
 using UnityEngine;
-
-// ReSharper disable NotNullMemberIsNotInitialized
 
 namespace Game.Scripts.Quests
 {
     [CreateAssetMenu(menuName = "RPG/Quests/KillEnemiesQuest")]
+    [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class KillEnemiesQuest : AbstractQuest
     {
         #region Editor tweakable fields
 
         [NotNull]
         [SerializeField]
-        private KillEnemiesObjective objective;
+        private StringIntDictionary targets = StringIntDictionary.New<StringIntDictionary>();
 
         #endregion
 
-        protected override string GetObjectiveDescription()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Kill these mosters:");
-            for (var i = 0; i < objective.EnemyNames.Count; i++)
-            {
-                sb.AppendLine(string.Format("{0} - {1}/{2} units",
-                                            objective.EnemyNames[i],
-                                            objective.EnemyKilledQuantity[i],
-                                            objective.EnemyQuantity[i]));
-            }
-
-            return sb.ToString();
-        }
-    }
-
-    /* todo    - current implementation is 2 separate lists, containing enemy name and enemy quantity.
-     * Refactor for using dictionary
-     * @author - Артур
-     * @date   - 20.05.2018
-     * @time   - 14:35
-    */
-    /// <summary>
-    /// For now, enemyNames count must be equal enemyQuantity count
-    /// </summary>
-    [Serializable]
-    public class KillEnemiesObjective
-    {
         #region Private fields
 
         [NotNull]
-        [SerializeField]
-        private List<string> enemyNames;
-
-        [NotNull]
-        [SerializeField]
-        private List<int> enemyQuantity;
-
-        [NotNull]
-        private readonly List<int> enemyKilledQuantity = new List<int>();
+        private Dictionary<string, int> killedTargets = new Dictionary<string, int>();
 
         #endregion
 
-        #region Properties
+        #region Public methods
 
-        [NotNull]
-        public List<string> EnemyNames
+        public void UpdateEnemyKilledQuantity(string enemyName)
         {
-            get { return enemyNames; }
+            if (killedTargets[enemyName] < targets.dictionary[enemyName])
+            {
+                killedTargets[enemyName] += 1;
+                CheckQuestComplete();
+            }
         }
 
-        [NotNull]
-        public List<int> EnemyQuantity
+        public override void Init()
         {
-            get { return enemyQuantity; }
+            killedTargets = new Dictionary<string, int>();
+            targets.dictionary.Keys.ForEach(type => killedTargets[type] = 0);
         }
 
-        [NotNull]
-        public List<int> EnemyKilledQuantity
+        #endregion
+
+        #region Private methods
+
+        public override string GetObjectiveDescription()
         {
-            get { return enemyKilledQuantity; }
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Kill these mosters:");
+            foreach (string targetName in targets.dictionary.Keys)
+            {
+                sb.AppendLine(string.Format("{0} - {1}/{2}",
+                                            targetName,
+                                            killedTargets[targetName],
+                                            targets.dictionary[targetName]));
+            }
+
+            sb.Remove(sb.Length - 1, 1);
+            return sb.ToString();
+        }
+
+        private void CheckQuestComplete()
+        {
+            foreach (string enemyName in targets.dictionary.Keys)
+            {
+                if (targets.dictionary[enemyName] != killedTargets[enemyName])
+                {
+                    return;
+                }
+            }
+
+            ProgressState = State.AVAILABLE_TO_COMPLETE;
         }
 
         #endregion

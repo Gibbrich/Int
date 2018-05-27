@@ -98,7 +98,27 @@ namespace Game.Characters.Player.Scripts
                 var weaponPickUp = (IInteractable<object, WeaponConfig>) interactable;
                 weaponSystem.PutWeaponInHand(weaponPickUp.Interact());
             }
-            
+        }
+
+        public void OnInteraction(AbstractQuest quest)
+        {
+            inputSystem.OnInteraction();
+            animationsSystem.PlayInteractAnimation();
+        }
+
+        public void OnInteraction(WeaponConfig weaponConfig)
+        {
+            weaponSystem.PutWeaponInHand(weaponConfig);
+        }
+
+        public void OnInteraction(QuestItem item)
+        {
+            questSystem.UpdatePickUpQuestsState(item.ItemName);
+        }
+
+        public void OnEnemyKilled(string enemyName)
+        {
+            questSystem.UpdateKillEnemiesQuestsState(enemyName);
         }
 
         #endregion

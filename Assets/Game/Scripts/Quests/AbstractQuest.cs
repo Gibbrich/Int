@@ -7,7 +7,7 @@ namespace Game.Scripts.Quests
 {
     /// <summary>
     /// In current version:
-    /// All data for quests kept as SO.
+    /// All data for quests kept as SO. In debug purposes, game designers should manually change quests state.
     /// 
     /// In future version:
     /// Possibly switch to records in DB.
@@ -70,10 +70,22 @@ namespace Game.Scripts.Quests
         public event Action<AbstractQuest> ProgressStateChanged = quest => { };
 
         #endregion
+        
+        #region Public methods
+
+        /// <summary>
+        /// Since <see cref="AbstractQuest"/> is <see cref="ScriptableObject"/>, <see cref="Awake"/> will not be called
+        /// on scene load. We need to init quest data manually by calling this method from <see cref="QuestGiverSystem"/>.
+        /// </summary>
+        public virtual void Init()
+        {
+        }
+        
+        #endregion
 
         #region Private methods
 
-        protected abstract string GetObjectiveDescription();
+        public abstract string GetObjectiveDescription();
 
         #endregion
 

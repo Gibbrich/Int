@@ -23,6 +23,10 @@ public class QuestDescriptionPanelController : BaseWindow
 
     [NotNull]
     [SerializeField]
+    private Text goals;
+
+    [NotNull]
+    [SerializeField]
     private Button positiveButton;
 
     [NotNull]
@@ -83,6 +87,7 @@ public class QuestDescriptionPanelController : BaseWindow
         
         title.text = quest.Title;
         description.text = quest.Description;
+        goals.text = quest.GetObjectiveDescription();
 
         positiveButton.onClick.RemoveAllListeners();
         negativeButton.onClick.RemoveAllListeners();

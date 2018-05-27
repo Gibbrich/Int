@@ -19,7 +19,11 @@ public class QuestGiverSystem : MonoBehaviour
 
     private void Start()
     {
-        quests.ForEach(quest => quest.ProgressStateChanged += OnQuestProgressStateChanged);
+        quests.ForEach(quest =>
+        {
+            quest.Init();
+            quest.ProgressStateChanged += OnQuestProgressStateChanged;
+        });
     }
 
     private void OnDestroy()

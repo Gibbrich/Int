@@ -13,14 +13,23 @@ using Zenject;
 [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
 public class EnemyActor : MonoBehaviour, IActor, IDamageable, IPointerClickHandler
 {
+    #region Editor tweakable fields
+
+    [SerializeField]
+    private string enemyName = "Enemy";
+    
+    #endregion
+    
     #region Private fields
 
     [NotNull]
     private HealthSystem healthSystem;
 
+    [NotNull]
     [Inject]
     private PlayerActor player;
 
+    [NotNull]
     [Inject]
     private UIController uiController;
     
@@ -49,6 +58,7 @@ public class EnemyActor : MonoBehaviour, IActor, IDamageable, IPointerClickHandl
         if (healthState.CurrentHealth <= 0)
         {
             animationsSystem.PlayDeathAnimation();
+            player.OnEnemyKilled(enemyName);
         }
         else
         {

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Game.Scripts.Quests;
 using JetBrains.Annotations;
+using ModestTree;
 
 namespace Game.Characters.Player.Scripts
 {
@@ -35,6 +37,20 @@ namespace Game.Characters.Player.Scripts
         public List<AbstractQuest> GetQuests()
         {
             return quests;
+        }
+
+        public void UpdateKillEnemiesQuestsState(string enemyName)
+        {
+            quests
+                .OfType<KillEnemiesQuest>()
+                .ForEach(quest => quest.UpdateEnemyKilledQuantity(enemyName));
+        }
+
+        public void UpdatePickUpQuestsState(string itemName)
+        {
+            quests
+                .OfType<PickUpQuest>()
+                .ForEach(quest => quest.UpdatePickedItemsQuantity(itemName));
         }
 
         #endregion
