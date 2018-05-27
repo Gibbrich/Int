@@ -21,6 +21,12 @@ public class PatrolPath : MonoBehaviour
     private float waitTime = 2f;
 
     #endregion
+    
+    #region Private fields
+
+    private int targetWaypointID = 0;
+    
+    #endregion
 
     #region Unity callbacks
 
@@ -53,21 +59,16 @@ public class PatrolPath : MonoBehaviour
     
     public Vector3 GetTargetWaypoint()
     {
-        /* todo    - implement
-         * @author - Артур
-         * @date   - 26.05.2018
-         * @time   - 10:46
-        */        
-        return Vector3.zero;
+        return transform.GetChild(targetWaypointID).position;
     }
 
     public void OnTargetWaypointReached()
     {
-        /* todo    - implement
-         * @author - Артур
-         * @date   - 26.05.2018
-         * @time   - 10:53
-        */        
+        targetWaypointID++;
+        if (targetWaypointID >= transform.childCount)
+        {
+            targetWaypointID = 0;
+        }
     }
     
     #endregion

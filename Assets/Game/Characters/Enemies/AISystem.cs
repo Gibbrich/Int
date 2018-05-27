@@ -44,6 +44,10 @@ namespace Game.Characters.Enemies
         private PatrolPath patrolPath;
 
         [SerializeField]
+        [Tooltip("Time, the character will wait until move to another waypoint")]
+        private float patrolPause = 5f;
+
+        [SerializeField]
         [Tooltip("Distance, within enemy will chase player")]
         private float aggroRadius = 5f;
 
@@ -75,6 +79,9 @@ namespace Game.Characters.Enemies
 
         [NotNull]
         private Character character;
+
+        private float patrolWaypointReachedTime = 0;
+        private bool isPatrolWaypointReached = false;
 
         #endregion
 
@@ -136,8 +143,6 @@ namespace Game.Characters.Enemies
             if (self.IsAlive())
             {
                 character.SetDestination(initialPosition);
-//                navigationAgent.stoppingDistance = 0;
-//                navigationAgent.SetDestination(initialPosition);
             }
         }
 
@@ -147,7 +152,6 @@ namespace Game.Characters.Enemies
                 IsPlayerWithinAggroRadius() 
                 && player.IsAlive())
             {
-//                navigationAgent.stoppingDistance = waypointTolerance;
                 stateMachine.CurrentState = EnemyState.CHASING;
             }
         }
@@ -188,23 +192,32 @@ namespace Game.Characters.Enemies
         private void OnPatrolStart()
         {
             character.SetDestination(patrolPath.GetTargetWaypoint());
-//            navigationAgent.stoppingDistance = 0;
-//            navigationAgent.SetDestination(patrolPath.GetTargetWaypoint());
         }
 
         private void OnPatrolUpdate()
         {
-            if (IsPlayerWithinAggroRadius())
+            if (IsPlayerWithinAggroRadius() && player.IsAlive())
             {
                 stateMachine.CurrentState = EnemyState.CHASING;
                 return;
             }
 
-            if (Vector3.Distance(patrolPath.GetTargetWaypoint(), transform.position) <= waypointTolerance)
+            if (isPatrolWaypointReached)
             {
-                patrolPath.OnTargetWaypointReached();
-                character.SetDestination(patrolPath.GetTargetWaypoint());
-//                navigationAgent.SetDestination(patrolPath.GetTargetWaypoint());
+                if (Time.time - patrolWaypointReachedTime >= patrolPause)
+                {
+                    patrolPath.OnTargetWaypointReached();
+                    character.SetDestination(patrolPath.GetTargetWaypoint());
+                    isPatrolWaypointReached = false;
+                }
+            }
+            else
+            {
+                if (Vector3.Distance(patrolPath.GetTargetWaypoint(), transform.position) <= waypointTolerance)
+                {
+                    isPatrolWaypointReached = true;
+                    patrolWaypointReachedTime = Time.time;
+                }
             }
         }
 
@@ -219,7 +232,6 @@ namespace Game.Characters.Enemies
             else if (IsPlayerWithinAggroRadius())
             {
                 character.SetDestination(player.transform.position, waypointTolerance);
-//                navigationAgent.SetDestination(player.transform.position);
             }
             else
             {
