@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad7a0cf045b54c14b936dde378fb24d4, type: 3}
+  m_Name: Revenge for Bob
+  m_EditorClassIdentifier: 
+  title: Revenge for Bob
+  description: "Hey! Could you help me? My name is Bob, I\u2019m mechanic. I owed
+    money to Tommy, one of the local moneylenders. He sent his thugs to take all of
+    my tools. Please, kick their asses for me and I will reward you.  Be careful,
+    they are quite dangerous. It will be better for you to find some heavy \u201Cargument\u201D
+    nearby. "
+  progressState: 0
+  targets:
+    keys:
+    - Bruiser
+    - Gunner
+    values: 0500000005000000

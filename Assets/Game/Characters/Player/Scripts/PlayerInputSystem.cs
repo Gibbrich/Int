@@ -1,29 +1,24 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Game.Characters.Player.Scripts;
 using Game.Characters.Scripts;
-using Game.Scripts.Quests;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Zenject;
 
 [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
 public class PlayerInputSystem : MonoBehaviour
 {
-    private const int MOUSE_LEFT_BUTTON = 0;
-    private const int INTERACTABLE_LAYER = 8;
-    private const float MAX_RAYCAST_DEPTH = 100f;
-    
     #region Editor tweakable fields
 
-    [SerializeField] [Tooltip("World units per second")]
+    [SerializeField]
+    [Tooltip("World units per second")]
     private float movementSpeed = 5f;
 
     [Tooltip("Degrees per second")]
-    [SerializeField] private float rotationSpeed = 90f;
+    [SerializeField]
+    private float rotationSpeed = 90f;
 
     #endregion
-    
+
     #region Private fields
 
     [NotNull]
@@ -31,12 +26,17 @@ public class PlayerInputSystem : MonoBehaviour
     private GameController gameController;
 
     [NotNull]
-    [Inject] 
+    [Inject]
     private UIController uiController;
 
+    [NotNull]
     private WeaponSystem weaponSystem;
+
+    [NotNull]
     private Animator animator;
-    
+
+    private new Rigidbody rigidbody;
+
     #endregion
 
     #region Unity callbacks
@@ -45,32 +45,49 @@ public class PlayerInputSystem : MonoBehaviour
     {
         weaponSystem = GetComponent<WeaponSystem>();
         animator = GetComponent<Animator>();
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        HandleRotationButtonsPressed();
-        HandleMovingButtonsPressed();
         HandleEscapeButtonClicked();
         HandleQuestButtonClicked();
-
         HandlePlayerRightMouseButtonClicked();
     }
 
+    private void FixedUpdate()
+    {
+        HandleMovingButtonsPressed();
+    }
+
+    private void OnAnimatorMove()
+    {
+        // we implement this function to override the default root motion.
+        // this allows us to modify the positional speed before it's applied.
+        if (Time.deltaTime > 0)
+        {
+            Vector3 v = animator.deltaPosition / Time.deltaTime;
+
+            // we preserve the existing y part of the current velocity.
+            v.y = rigidbody.velocity.y;
+            rigidbody.velocity = v;
+        }
+    }
+
     #endregion
-    
+
     #region Public methods
 
     public void OnInteraction()
     {
         animator.SetTrigger("OnInteraction");
     }
-    
+
     #endregion
-    
+
     #region Private methods
-    
+
     private void HandlePlayerRightMouseButtonClicked()
     {
         if (Input.GetMouseButtonDown(1))
@@ -78,44 +95,29 @@ public class PlayerInputSystem : MonoBehaviour
             weaponSystem.Attack();
         }
     }
-    
-    private void HandleRotationButtonsPressed()
+
+    private void HandleMovingButtonsPressed()
     {
-        float rotationAmplitude = Input.GetAxis("Horizontal");
-        animator.SetFloat("Turn", rotationAmplitude);
-        
-        if (rotationAmplitude > 0)
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+
+        Vector3 movementDirection = GetMovementDirection();
+        Vector3 movement = (v * movementDirection + h * Camera.main.transform.right).normalized;
+        movement = transform.InverseTransformDirection(movement);
+
+        animator.SetFloat("Forward", movement.z, 0.1f, Time.deltaTime);
+        animator.SetFloat("Turn", h, 0.1f, Time.deltaTime);
+
+        if (h > 0)
         {
             transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
         }
-        else if (rotationAmplitude < 0)
+        else if (h < 0)
         {
             transform.Rotate(-1 * Vector3.up * rotationSpeed * Time.deltaTime);
         }
-    }    
-    
-    private void HandleMovingButtonsPressed()
-    {
-        /* todo    - for now, there is no moving back animation in animation controller,
-         * so moving back looks a little bit wierd. Do not step back! :D
-         * @author - Артур
-         * @date   - 21.05.2018
-         * @time   - 21:16
-        */
-        
-        float movementAmplitude = Input.GetAxis("Vertical");
-        animator.SetFloat("Forward", movementAmplitude);
-        
-        if (movementAmplitude > 0)
-        {
-            transform.position += transform.forward * Time.deltaTime * movementSpeed;
-        }
-        else if (movementAmplitude < 0)
-        {
-            transform.position -= transform.forward * Time.deltaTime * movementSpeed;
-        }
     }
-    
+
     private void HandleEscapeButtonClicked()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -148,6 +150,11 @@ public class PlayerInputSystem : MonoBehaviour
             }
         }
     }
-    
+
+    private Vector3 GetMovementDirection()
+    {
+        return Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+    }
+
     #endregion
 }

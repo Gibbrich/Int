@@ -9,11 +9,24 @@ public class WeaponPickUpActor : MonoBehaviour, IActor, IInteractable<object, We
     #region Editor tweakable fields
 
     [SerializeField]
+    [Tooltip("How fast weapon rotates, degree/sec")]
+    private float rotationSpeed = 20;
+
+    [SerializeField]
+    [Tooltip("Rotating weapon previev")]
+    private GameObject weaponObject;
+
+    [SerializeField]
     private WeaponConfig weaponConfig;
-    
+
     #endregion
-    
+
     #region Unity callbacks
+
+    private void Update()
+    {
+        weaponObject.transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -25,13 +38,13 @@ public class WeaponPickUpActor : MonoBehaviour, IActor, IInteractable<object, We
     }
 
     #endregion
-    
+
     #region Public methods
-    
+
     public WeaponConfig Interact(object param = null)
     {
         return weaponConfig;
-    }    
-    
+    }
+
     #endregion
 }
