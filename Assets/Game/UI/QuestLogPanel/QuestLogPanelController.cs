@@ -25,6 +25,9 @@ public class QuestLogPanelController : BaseWindow
     [SerializeField]
     private GameObject content;
 
+    [SerializeField]
+    private float distanceBetweenQUestTitles = 40f;
+    
     #endregion
 
     #region Properties
@@ -121,19 +124,19 @@ public class QuestLogPanelController : BaseWindow
      * @date   - 19.05.2018
      * @time   - 16:26
     */
-    private Vector2 GetPosition()
+    private Vector2 GetPosition(int id)
     {
-        return new Vector2(-5, -35);
+        return new Vector2(-5, -35) + id * distanceBetweenQUestTitles * new Vector2(-1, -1);
     }
 
     private void ShowQuests()
-    {
-        questSystem.GetQuests().ForEach(quest =>
+    {       
+        for (int i = 0; i < questSystem.GetQuests().Count; i++)
         {
-            Vector2 offset = GetPosition();
+            Vector2 offset = GetPosition(i);
             var position = new QuestTitleController.Position(OFFSET_LEFT, OFFSET_RIGHT, offset.x, offset.y);
-            pool.GetNewObject().Init(quest, position);
-        });
+            pool.GetNewObject().Init(questSystem.GetQuests()[i], position);
+        }
     }
 
     private void HideQuests()

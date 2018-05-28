@@ -17,9 +17,9 @@ MonoBehaviour:
     my tools. Please, kick their asses for me and I will reward you.  Be careful,
     they are quite dangerous. It will be better for you to find some heavy \u201Cargument\u201D
     nearby. "
-  progressState: 0
+  progressState: 1
   targets:
     keys:
-    - Bruiser
+    - Soldier
     - Gunner
     values: 0500000005000000

@@ -1,4 +1,5 @@
-﻿using Game.Characters.Scripts;
+﻿using System.Collections.Generic;
+using Game.Characters.Scripts;
 using Game.Scripts.Quests;
 using JetBrains.Annotations;
 using Zenject;
@@ -24,6 +25,9 @@ public class UIController
 
     [Inject(Id = Installer.Identifiers.TARGET_HEALTH_BAR)]
     private HealthBarSystem targetHealthBarSystem;
+
+    [Inject]
+    private QuestGiverListController questGiverListController;
 
     #endregion
     
@@ -97,6 +101,16 @@ public class UIController
     public void UpdatePlayerHealthBarValues(float currentHealth, float maxHealth)
     {
         playerHealthBarSystem.OnHealthChanged(currentHealth, maxHealth);
+    }
+
+    public void ShowQuestGiverList(List<AbstractQuest> quests)
+    {
+        questGiverListController.Show(quests);
+    }
+
+    public void HideQuestGiverList()
+    {
+        questGiverListController.Hide();
     }
 
     #endregion

@@ -51,7 +51,7 @@ namespace Game.Characters
 
         #region Unity callbacks
 
-        private void Start()
+        private void Awake()
         {
             self = GetComponent<IDamageable>();
             agent = GetComponent<NavMeshAgent>();

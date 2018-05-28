@@ -35,10 +35,10 @@ public class QuestGiverSystem : MonoBehaviour
     
     #region Public methods
 
-    [CanBeNull]
-    public AbstractQuest GetQuest()
+    [NotNull]
+    public List<AbstractQuest> GetQuests()
     {
-        return quests.IsEmpty() ? null : quests[0];
+        return quests;
     }
     
     #endregion

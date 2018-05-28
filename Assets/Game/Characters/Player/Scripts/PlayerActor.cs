@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Game.Characters.Scripts;
 using Game.Scripts.Quests;
 using JetBrains.Annotations;
+using ModestTree;
 using UnityEngine;
 using Zenject;
 
@@ -100,10 +103,21 @@ namespace Game.Characters.Player.Scripts
             }
         }
 
-        public void OnInteraction(AbstractQuest quest)
+        public void OnInteraction(List<AbstractQuest> quests)
         {
-            inputSystem.OnInteraction();
             animationsSystem.PlayInteractAnimation();
+            if (quests.IsEmpty())
+            {
+            }
+            else if (quests.Count == 1)
+            {
+                uiController.OpenQuestDescriptionPanel(quests.First());
+            }
+            else
+            {
+                uiController.ShowQuestGiverList(quests);
+            }
+            
         }
 
         public void OnInteraction(WeaponConfig weaponConfig)

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572fafac2b76c314aa00038645fa31be, type: 3}
   m_Name: HeavyFullMetalSword
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1623649799919170, guid: fb44a0d9eddff96439a10159e6b61cfb, type: 2}
+  prefab: {fileID: 1760126506865776, guid: d493c3b7cde38244187439eaa8cd82d1, type: 2}
   grip: {fileID: 4932177559571098, guid: 2b4e6664bf425c54298f6480d9b78f6f, type: 2}
   animations: {fileID: 11400000, guid: 50eae0c96486c3e48b68b88657bf8214, type: 2}
   damage: 50
