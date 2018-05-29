@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using FMODUnity;
 using Game.Characters.Animations.Scripts;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -31,6 +32,11 @@ public class WeaponConfig: ScriptableObject
 
     [SerializeField]
     private float attackRange;
+    
+    [CanBeNull]
+    [EventRef]
+    [SerializeField]
+    private string attackSound;
     
     #endregion
 
@@ -69,5 +75,17 @@ public class WeaponConfig: ScriptableObject
         get { return animations; }
     }
 
+    #endregion
+    
+    #region Public methods
+
+    public void PlayAttackSound()
+    {
+        if (attackSound != null)
+        {
+            RuntimeManager.PlayOneShot(attackSound);
+        }
+    }
+    
     #endregion
 }

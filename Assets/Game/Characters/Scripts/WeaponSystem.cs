@@ -114,7 +114,8 @@ namespace Game.Characters.Scripts
             if (target != null)
             {
                 if (GetRangeToTarget(target.GetGameObject().transform.position) <= weaponConfig.AttackRange)
-                {             
+                {
+                    weaponConfig.PlayAttackSound();
                     target.TakeDamage(weaponConfig.Damage);
                 }
             }

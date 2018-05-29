@@ -1175,6 +1175,7 @@ GameObject:
   - component: {fileID: 136648555760982788}
   - component: {fileID: 54873332134350296}
   - component: {fileID: 114144250179847780}
+  - component: {fileID: 114247515559252612}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2627,6 +2628,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b8bcc7dc39bcf41bbf721ef326ca78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114247515559252612
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1921450622021848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c02359ad6ec151468b29b75cafc55e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputSound: event:/Player footstep
+  walkingSpeed: 0.5
 --- !u!114 &114468571393281376
 MonoBehaviour:
   m_ObjectHideFlags: 1

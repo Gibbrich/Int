@@ -4,6 +4,7 @@ using Game.Characters.Scripts;
 using JetBrains.Annotations;
 using UnityEngine;
 
+[RequireComponent(typeof(Footstep))]
 [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
 public class PlayerInputSystem : MonoBehaviour
 {
@@ -36,6 +37,9 @@ public class PlayerInputSystem : MonoBehaviour
     [NotNull]
     private Animator animator;
 
+    [NotNull]
+    private Footstep footstep;
+
     private new Rigidbody rigidbody;
 
     #endregion
@@ -47,7 +51,8 @@ public class PlayerInputSystem : MonoBehaviour
         weaponSystem = GetComponent<WeaponSystem>();
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
-        player = FindObjectOfType<PlayerActor>();
+        player = GetComponent<PlayerActor>();
+        footstep = GetComponent<Footstep>();
         
         InitOuterDependencies();
     }
@@ -120,6 +125,11 @@ public class PlayerInputSystem : MonoBehaviour
         
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
+
+        if (v >= 0.01 && footstep.IsTimeToPlay())
+        {
+            footstep.PlayFootsteps();
+        }
 
         Vector3 movementDirection = GetMovementDirection();
         Vector3 movement = (v * movementDirection + h * Camera.main.transform.right).normalized;

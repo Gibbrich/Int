@@ -1,5 +1,6 @@
 ﻿
 using System.Diagnostics.CodeAnalysis;
+using FMODUnity;
 using Game.Characters.Player.Scripts;
 using Game.Characters.Scripts;
 using JetBrains.Annotations;
@@ -15,6 +16,10 @@ public class EnemyActor : MonoBehaviour, IActor, IDamageable, IPointerClickHandl
 
     [SerializeField]
     private string enemyName = "Enemy";
+    
+    [EventRef]
+    [SerializeField]
+    private string deathSound;
     
     #endregion
     
@@ -59,6 +64,7 @@ public class EnemyActor : MonoBehaviour, IActor, IDamageable, IPointerClickHandl
         
         if (healthState.CurrentHealth <= 0)
         {
+            RuntimeManager.PlayOneShot(deathSound);
             animationsSystem.PlayDeathAnimation();
             player.OnEnemyKilled(enemyName);
             collider.isTrigger = true;

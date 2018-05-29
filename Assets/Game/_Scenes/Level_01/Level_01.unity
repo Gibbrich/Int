@@ -1261,9 +1261,28 @@ Prefab:
       propertyPath: health.maxValue
       value: 1000
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 81042443195692172, guid: 8d71f703abb32a14b9478073b71a3a73, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 8d71f703abb32a14b9478073b71a3a73, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &460465222 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1921450622021848, guid: 8d71f703abb32a14b9478073b71a3a73,
+    type: 2}
+  m_PrefabInternal: {fileID: 460465221}
+--- !u!114 &460465223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 460465222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c02359ad6ec151468b29b75cafc55e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputSound: event:/Player footstep
+  walkingSpeed: 0.5
 --- !u!1 &463167106
 GameObject:
   m_ObjectHideFlags: 0
@@ -2060,6 +2079,33 @@ Transform:
   m_Father: {fileID: 1400779139}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &774670484 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1434290708724618, guid: 064bd48cfd564cb459ee741dcc01c718,
+    type: 2}
+  m_PrefabInternal: {fileID: 1227654424}
+--- !u!114 &774670485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 774670484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/Weapon pickup
+  PlayEvent: 3
+  StopEvent: 0
+  CollisionTag: Player
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!1 &829138852
 GameObject:
   m_ObjectHideFlags: 0
@@ -2125,7 +2171,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh70564
+  m_Name: pb_Mesh5788
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -6921,12 +6967,51 @@ Transform:
   m_PrefabParentObject: {fileID: 4000012866690822, guid: eeacaf4888606d34684f3f717fa94541,
     type: 2}
   m_PrefabInternal: {fileID: 1946801291}
+--- !u!114 &1005772013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1005772009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/Item pickup
+  PlayEvent: 12
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
+--- !u!1 &1091796197 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1759660800739764, guid: 8d71f703abb32a14b9478073b71a3a73,
+    type: 2}
+  m_PrefabInternal: {fileID: 460465221}
+--- !u!114 &1091796200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1091796197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ListenerNumber: 0
 --- !u!43 &1104240527
 Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh70542
+  m_Name: pb_Mesh5766
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -11787,6 +11872,28 @@ Transform:
   m_PrefabParentObject: {fileID: 4000010604941900, guid: 689bce6208bc9f441bfad84d4492dd5d,
     type: 2}
   m_PrefabInternal: {fileID: 678688710}
+--- !u!114 &1215122655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1215122651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/Item pickup
+  PlayEvent: 12
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!1001 &1227654424
 Prefab:
   m_ObjectHideFlags: 0
@@ -12048,6 +12155,28 @@ Transform:
   m_PrefabParentObject: {fileID: 4000010523346236, guid: 8d60ce487f563c24982c53e88f1dd5b4,
     type: 2}
   m_PrefabInternal: {fileID: 1692955830}
+--- !u!114 &1356942965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1356942961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/Item pickup
+  PlayEvent: 12
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!1 &1400779138
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,3 +17,4 @@ MonoBehaviour:
   damage: 50
   speed: 2
   attackRange: 10
+  attackSound: event:/Sword strike

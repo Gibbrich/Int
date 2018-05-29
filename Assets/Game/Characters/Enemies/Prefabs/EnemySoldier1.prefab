@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 114379450736005864}
   - component: {fileID: 195876290882926872}
   - component: {fileID: 114883285976029814}
+  - component: {fileID: 114794096730646734}
   m_Layer: 8
   m_Name: EnemySoldier1
   m_TagString: Untagged
@@ -2585,6 +2586,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: Enemy
+  deathSound: event:/Death
+--- !u!114 &114794096730646734
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1033920679219102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c02359ad6ec151468b29b75cafc55e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputSound: event:/Enemy footstep
+  walkingSpeed: 0.5
 --- !u!114 &114883285976029814
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2599,10 +2614,8 @@ MonoBehaviour:
   animatorForwardCap: 0.5
   stoppingDistance: 1
   moveSpeedMultiplier: 1
-  animationSpeedMultiplier: 1.5
   movingTurnSpeed: 360
   stationaryTurnSpeed: 180
-  steeringSpeed: 1
 --- !u!114 &114922987805776158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3142,5 +3155,5 @@ SpriteRenderer:
   m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0

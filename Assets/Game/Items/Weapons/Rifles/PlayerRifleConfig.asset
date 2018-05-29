@@ -17,3 +17,4 @@ MonoBehaviour:
   damage: 40
   speed: 2
   attackRange: 10
+  attackSound: event:/Plazma gun shot

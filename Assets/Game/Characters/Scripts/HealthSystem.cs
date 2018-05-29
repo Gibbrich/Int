@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using JetBrains.Annotations;
+﻿using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace Game.Characters.Scripts

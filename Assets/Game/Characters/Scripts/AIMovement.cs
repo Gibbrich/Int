@@ -37,6 +37,7 @@ namespace Game.Characters
         private NavMeshAgent agent;
         private Animator animator;
         private new Rigidbody rigidbody;
+        private Footstep footstep;
 
         #endregion
 
@@ -48,6 +49,7 @@ namespace Game.Characters
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
             rigidbody = GetComponent<Rigidbody>();
+            footstep = GetComponent<Footstep>();
         }
 
         private void Update()
@@ -90,6 +92,11 @@ namespace Game.Characters
                 if (agent.remainingDistance > agent.stoppingDistance)
                 {
                     Move(agent.desiredVelocity);
+                    
+                    if (footstep.IsTimeToPlay())
+                    {
+                        footstep.PlayFootsteps();
+                    }
                 }
                 else
                 {
