@@ -8,6 +8,13 @@ using UnityEngine.UI;
 [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
 public class HealthBarSystem : MonoBehaviour
 {
+    #region Editor tweakable fields
+
+    [SerializeField]
+    private bool shouldHideOnStart = true;
+    
+    #endregion
+    
     #region Private fields
 
     [NotNull]
@@ -24,6 +31,11 @@ public class HealthBarSystem : MonoBehaviour
     {
         healthSlider = GetComponent<Slider>();
         healthAmountLabel = GetComponentInChildren<Text>();
+
+        if (shouldHideOnStart)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     #endregion

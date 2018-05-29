@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Game.Scripts;
@@ -7,7 +6,6 @@ using Game.Scripts.Quests;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
 public class QuestGiverListController : MonoBehaviour
@@ -24,6 +22,11 @@ public class QuestGiverListController : MonoBehaviour
 
     [NotNull]
     [SerializeField]
+    [Tooltip("List item")]
+    private QuestTitleController listItemPrefab;
+
+    [NotNull]
+    [SerializeField]
     [Tooltip("Host for quest tittle items")]
     private GameObject content;
 
@@ -33,6 +36,15 @@ public class QuestGiverListController : MonoBehaviour
 
     [SerializeField]
     private float distanceBetweenQUestTitles = 40f;
+
+    #endregion
+
+    #region Properties
+
+    public bool IsPanelOpened
+    {
+        get { return gameObject.activeSelf; }
+    }
 
     #endregion
 
@@ -48,6 +60,22 @@ public class QuestGiverListController : MonoBehaviour
     private void Awake()
     {
         closeButton.onClick.AddListener(Hide);
+        
+        Func<QuestTitleController> create = () =>
+        {
+            QuestTitleController questTitleController = Instantiate(listItemPrefab);
+            questTitleController.gameObject.transform.SetParent(content.transform);
+            return questTitleController;
+        };
+
+        pool = new Pool<QuestTitleController>(
+            10,
+            create,
+            controller => Destroy(controller.gameObject),
+            WakeUp,
+            SetToSleep);
+        
+        gameObject.SetActive(false);
     }
 
     #endregion
@@ -62,6 +90,7 @@ public class QuestGiverListController : MonoBehaviour
             var position = new QuestTitleController.Position(OFFSET_LEFT, OFFSET_RIGHT, offset.x, offset.y);
             pool.GetNewObject().Init(quests[i], position);
         }
+
         gameObject.SetActive(true);
     }
 
@@ -76,25 +105,7 @@ public class QuestGiverListController : MonoBehaviour
     #endregion
 
     #region Private methods
-
-    [Inject]
-    private void Init(QuestTitleController.Factory factory)
-    {
-        Func<QuestTitleController> create = () =>
-        {
-            QuestTitleController questTitleController = factory.Create();
-            questTitleController.gameObject.transform.SetParent(content.transform);
-            return questTitleController;
-        };
-
-        pool = new Pool<QuestTitleController>(
-            10,
-            create,
-            controller => Destroy(controller.gameObject),
-            WakeUp,
-            SetToSleep);
-    }
-
+    
     private void SetToSleep(QuestTitleController controller)
     {
         controller.gameObject.SetActive(false);

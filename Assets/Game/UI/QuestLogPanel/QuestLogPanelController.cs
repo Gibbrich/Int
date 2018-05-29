@@ -6,7 +6,6 @@ using Game.Scripts.Quests;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
 public class QuestLogPanelController : BaseWindow
@@ -20,6 +19,11 @@ public class QuestLogPanelController : BaseWindow
     private const float OFFSET_RIGHT = -10;
 
     #region Editor tweakable fields
+    
+    [NotNull]
+    [SerializeField]
+    [Tooltip("List item")]
+    private QuestTitleController listItemPrefab;
 
     [Tooltip("Host for quest tittle items")]
     [SerializeField]
@@ -37,6 +41,8 @@ public class QuestLogPanelController : BaseWindow
         get { return gameObject.activeSelf; }
         set
         {
+            gameObject.SetActive(value);
+            
             if (value)
             {
                 ShowQuests();
@@ -45,8 +51,6 @@ public class QuestLogPanelController : BaseWindow
             {
                 HideQuests();
             }
-
-            gameObject.SetActive(value);
         }
     }
 
@@ -55,7 +59,6 @@ public class QuestLogPanelController : BaseWindow
     #region Private fields
 
     [NotNull]
-    [Inject]
     private QuestSystem questSystem;
 
     [NotNull]
@@ -70,8 +73,25 @@ public class QuestLogPanelController : BaseWindow
 
     private void Start()
     {
+        questSystem = FindObjectOfType<QuestSystem>();
         closeButton = GetComponentInChildren<Button>();
         closeButton.onClick.AddListener(() => IsPanelOpened = false);
+        
+        Func<QuestTitleController> create = () =>
+        {
+            QuestTitleController questTitleController = Instantiate(listItemPrefab);
+            questTitleController.gameObject.transform.SetParent(content.transform);
+            return questTitleController;
+        };
+
+        pool = new Pool<QuestTitleController>(
+            10,
+            create,
+            controller => Destroy(controller.gameObject),
+            WakeUp,
+            SetToSleep);
+        
+        gameObject.SetActive(false);
     }
 
     #endregion
@@ -90,24 +110,6 @@ public class QuestLogPanelController : BaseWindow
     #endregion
 
     #region Private methods
-
-    [Inject]
-    private void Init(QuestTitleController.Factory factory)
-    {
-        Func<QuestTitleController> create = () =>
-        {
-            QuestTitleController questTitleController = factory.Create();
-            questTitleController.gameObject.transform.SetParent(content.transform);
-            return questTitleController;
-        };
-
-        pool = new Pool<QuestTitleController>(
-            10,
-            create,
-            controller => Destroy(controller.gameObject),
-            WakeUp,
-            SetToSleep);
-    }
 
     private void SetToSleep(QuestTitleController controller)
     {

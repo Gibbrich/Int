@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 public class MenuPanelController : BaseWindow
 {
@@ -16,7 +15,6 @@ public class MenuPanelController : BaseWindow
     
     #region Private fields
 
-    [Inject]
     private GameController gameController;
 
     #endregion
@@ -26,9 +24,11 @@ public class MenuPanelController : BaseWindow
     // Use this for initialization
     void Start()
     {
+        gameController = FindObjectOfType<GameController>();
         resumeButton.onClick.AddListener(OnResumeButtonClicked);
         mainMenuButton.onClick.AddListener(OnMainMenuButtonClicked);
         exitButton.onClick.AddListener(OnExitButtonClicked);
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame

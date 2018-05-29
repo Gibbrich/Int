@@ -5,7 +5,7 @@ using Game.Characters.Scripts;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
+
 
 [RequireComponent(typeof(HealthSystem))]
 [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
@@ -24,11 +24,9 @@ public class EnemyActor : MonoBehaviour, IActor, IDamageable, IPointerClickHandl
     private HealthSystem healthSystem;
 
     [NotNull]
-    [Inject]
     private PlayerActor player;
 
     [NotNull]
-    [Inject]
     private UIController uiController;
     
     [NotNull]
@@ -44,9 +42,11 @@ public class EnemyActor : MonoBehaviour, IActor, IDamageable, IPointerClickHandl
     // Use this for initialization
     void Awake()
     {
+        uiController = FindObjectOfType<UIController>();
         healthSystem = GetComponent<HealthSystem>();
         animationsSystem = GetComponent<AnimationsSystem>();
         collider = GetComponent<CapsuleCollider>();
+        player = FindObjectOfType<PlayerActor>();
     }
 
     #endregion

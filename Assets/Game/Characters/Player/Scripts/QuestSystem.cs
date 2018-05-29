@@ -2,11 +2,11 @@
 using System.Linq;
 using Game.Scripts.Quests;
 using JetBrains.Annotations;
-using ModestTree;
+using UnityEngine;
 
 namespace Game.Characters.Player.Scripts
 {
-    public class QuestSystem
+    public class QuestSystem: MonoBehaviour
     {
         #region Private fields
 
@@ -41,16 +41,18 @@ namespace Game.Characters.Player.Scripts
 
         public void UpdateKillEnemiesQuestsState(string enemyName)
         {
-            quests
-                .OfType<KillEnemiesQuest>()
-                .ForEach(quest => quest.UpdateEnemyKilledQuantity(enemyName));
+            foreach (KillEnemiesQuest quest in quests.OfType<KillEnemiesQuest>())
+            {
+                quest.UpdateEnemyKilledQuantity(enemyName);
+            }
         }
 
         public void UpdatePickUpQuestsState(string itemName)
         {
-            quests
-                .OfType<PickUpQuest>()
-                .ForEach(quest => quest.UpdatePickedItemsQuantity(itemName));
+            foreach (PickUpQuest quest in quests.OfType<PickUpQuest>())
+            {
+                quest.UpdatePickedItemsQuantity(itemName);
+            }
         }
 
         #endregion

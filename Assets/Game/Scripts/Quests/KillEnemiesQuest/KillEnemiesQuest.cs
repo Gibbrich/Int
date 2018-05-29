@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using Game.Scripts.Managers;
 using JetBrains.Annotations;
-using ModestTree;
 using UnityEngine;
 
 namespace Game.Scripts.Quests
@@ -22,7 +22,7 @@ namespace Game.Scripts.Quests
         #region Private fields
 
         [NotNull]
-        private Dictionary<string, int> killedTargets = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> killedTargets = new Dictionary<string, int>();
 
         #endregion
 
@@ -39,8 +39,14 @@ namespace Game.Scripts.Quests
 
         public override void Init()
         {
-            killedTargets = new Dictionary<string, int>();
-            targets.dictionary.Keys.ForEach(type => killedTargets[type] = 0);
+            if (PlayerPreferencesManager.ShouldInitQuests())
+            {
+                ProgressState = State.AVAILABLE_TO_PICK;
+                foreach (string type in targets.dictionary.Keys)
+                {
+                    killedTargets[type] = 0;
+                }
+            }
         }
 
         #endregion

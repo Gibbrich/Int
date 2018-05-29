@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using Game.Scripts.Managers;
 using JetBrains.Annotations;
-using ModestTree;
 using UnityEngine;
 
 namespace Game.Scripts.Quests
 {
+    /// <summary>
+    /// For now code in <see cref="PickUpQuest"/> and <see cref="KillEnemiesQuest"/> is similar.
+    /// Think on potential implementation in future and if there won't be any crucial remarks unite in common abstract class.
+    /// </summary>
     [CreateAssetMenu(menuName = "RPG/Quests/PickUpQuest")]
     [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class PickUpQuest : AbstractQuest
@@ -23,7 +27,7 @@ namespace Game.Scripts.Quests
         #region Private fields
 
         [NotNull]
-        private Dictionary<string, int> pickedTargets;
+        private readonly Dictionary<string, int> pickedTargets = new Dictionary<string, int>();
 
         #endregion
         
@@ -36,12 +40,20 @@ namespace Game.Scripts.Quests
             {
                 pickedTargets[itemName] += 1;
             }
+            
+            CheckQuestComplete();
         }
 
         public override void Init()
         {
-            pickedTargets = new Dictionary<string, int>();
-            targets.dictionary.Keys.ForEach(type => pickedTargets[type] = 0);
+            if (PlayerPreferencesManager.ShouldInitQuests())
+            {
+                ProgressState = State.AVAILABLE_TO_PICK;
+                foreach (string type in targets.dictionary.Keys)
+                {
+                    pickedTargets[type] = 0;
+                }
+            }
         }
 
         #endregion
@@ -63,7 +75,20 @@ namespace Game.Scripts.Quests
             sb.Remove(sb.Length - 1, 1);
             return sb.ToString();
         }
-        
+
+        private void CheckQuestComplete()
+        {
+            foreach (string enemyName in targets.dictionary.Keys)
+            {
+                if (targets.dictionary[enemyName] != pickedTargets[enemyName])
+                {
+                    return;
+                }
+            }
+
+            ProgressState = State.AVAILABLE_TO_COMPLETE;
+        }
+
         #endregion
     }
 }

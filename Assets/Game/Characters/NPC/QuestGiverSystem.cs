@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Game.Scripts.Quests;
 using JetBrains.Annotations;
-using ModestTree;
 using UnityEngine;
 
 public class QuestGiverSystem : MonoBehaviour

@@ -1,36 +1,37 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Game.Characters.Scripts;
 using Game.Scripts.Quests;
 using JetBrains.Annotations;
-using Zenject;
+using UnityEngine;
 
 /// <summary>
 /// This class should be used for all interactions with UI.
 /// </summary>
-public class UIController
+public class UIController : MonoBehaviour
 {
     #region Private fields
 
-    [Inject]
+    [SerializeField]
     private MenuPanelController menuPanelController;
 
-    [Inject] 
+    [SerializeField]
     private QuestLogPanelController questLogPanelController;
 
-    [Inject]
+    [SerializeField]
     private QuestDescriptionPanelController questDescriptionPanelController;
 
-    [Inject(Id = Installer.Identifiers.PLAYER_HEALTH_BAR)]
+    [SerializeField]
     private HealthBarSystem playerHealthBarSystem;
 
-    [Inject(Id = Installer.Identifiers.TARGET_HEALTH_BAR)]
+    [SerializeField]
     private HealthBarSystem targetHealthBarSystem;
 
-    [Inject]
+    [SerializeField]
     private QuestGiverListController questGiverListController;
 
     #endregion
-    
+
     #region Public methods
 
     public void SetMenuPanelOpened(bool isOpened)
@@ -49,13 +50,16 @@ public class UIController
     /// <returns></returns>
     public bool IsAnyUIPanelOpened()
     {
-        return questLogPanelController.IsPanelOpened || questDescriptionPanelController.IsPanelOpened;
+        return questLogPanelController.IsPanelOpened ||
+               questDescriptionPanelController.IsPanelOpened ||
+               questGiverListController.IsPanelOpened;
     }
 
     public void CloseAllUIPanels()
     {
         questLogPanelController.IsPanelOpened = false;
         questDescriptionPanelController.IsPanelOpened = false;
+        questGiverListController.Hide();
     }
 
     public void OpenQuestDescriptionPanel([NotNull] AbstractQuest abstractQuest)
@@ -92,7 +96,7 @@ public class UIController
     {
         targetHealthBarSystem.Hide();
     }
-    
+
     public void UpdateTargetHealthBarValues(float currentHealth, float maxHealth)
     {
         targetHealthBarSystem.OnHealthChanged(currentHealth, maxHealth);
@@ -111,6 +115,27 @@ public class UIController
     public void HideQuestGiverList()
     {
         questGiverListController.Hide();
+    }
+
+    public void OpenQuestGiverWindows(List<AbstractQuest> quests)
+    {
+        if (quests.Count == 0)
+        {
+        }
+        else if (quests.Count == 1)
+        {
+            if (!questDescriptionPanelController.IsPanelOpened)
+            {
+                OpenQuestDescriptionPanel(quests.First());
+            }
+        }
+        else
+        {
+            if (!questGiverListController.IsPanelOpened)
+            {
+                ShowQuestGiverList(quests);
+            }
+        }
     }
 
     #endregion

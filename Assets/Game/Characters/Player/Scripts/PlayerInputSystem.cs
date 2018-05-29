@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Game.Characters.Player.Scripts;
 using Game.Characters.Scripts;
 using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 
 [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
 public class PlayerInputSystem : MonoBehaviour
@@ -22,15 +22,16 @@ public class PlayerInputSystem : MonoBehaviour
     #region Private fields
 
     [NotNull]
-    [Inject]
     private GameController gameController;
 
     [NotNull]
-    [Inject]
     private UIController uiController;
 
     [NotNull]
     private WeaponSystem weaponSystem;
+
+    [NotNull]
+    private PlayerActor player;
 
     [NotNull]
     private Animator animator;
@@ -46,6 +47,9 @@ public class PlayerInputSystem : MonoBehaviour
         weaponSystem = GetComponent<WeaponSystem>();
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
+        player = FindObjectOfType<PlayerActor>();
+        
+        InitOuterDependencies();
     }
 
     // Update is called once per frame
@@ -83,6 +87,17 @@ public class PlayerInputSystem : MonoBehaviour
     {
         animator.SetTrigger("OnInteraction");
     }
+    
+    /* todo    - switch to DI
+         * @author - Артур
+         * @date   - 29.05.2018
+         * @time   - 23:35
+        */ 
+    public void InitOuterDependencies()
+    {
+        gameController = FindObjectOfType<GameController>();
+        uiController = FindObjectOfType<UIController>();
+    }
 
     #endregion
 
@@ -98,6 +113,11 @@ public class PlayerInputSystem : MonoBehaviour
 
     private void HandleMovingButtonsPressed()
     {
+        if (!player.IsAlive())
+        {
+            return;            
+        }
+        
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
@@ -140,6 +160,11 @@ public class PlayerInputSystem : MonoBehaviour
 
     private void HandleQuestButtonClicked()
     {
+        if (!player.IsAlive())
+        {
+            return;            
+        }
+        
         if (!gameController.IsGamePaused && Input.GetKeyDown(KeyCode.Q))
         {
             uiController.RevertQuestLogPanelOpenedState();

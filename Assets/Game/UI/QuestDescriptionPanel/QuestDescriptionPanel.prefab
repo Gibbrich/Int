@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 222257308064850202}
   - component: {fileID: 114333945202308754}
   - component: {fileID: 114284864404581108}
-  - component: {fileID: 114362263782933314}
   m_Layer: 5
   m_Name: QuestDescriptionPanel
   m_TagString: Untagged
@@ -378,6 +377,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6698e8b77c65df143a192f8f989d0733, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  title: {fileID: 0}
+  description: {fileID: 0}
+  goals: {fileID: 0}
+  positiveButton: {fileID: 0}
+  negativeButton: {fileID: 0}
+  closeButton: {fileID: 0}
+  questLogPanelController: {fileID: 0}
+  questGiverListController: {fileID: 0}
 --- !u!114 &114333945202308754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -405,22 +412,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114362263782933314
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1090778758418574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-  - {fileID: 114284864404581108}
-  _identifier: 
-  _context: {fileID: 0}
-  _bindType: 0
 --- !u!114 &114390197561846446
 MonoBehaviour:
   m_ObjectHideFlags: 1

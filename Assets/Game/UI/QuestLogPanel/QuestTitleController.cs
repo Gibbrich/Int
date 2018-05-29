@@ -1,7 +1,6 @@
 ﻿using Game.Scripts.Quests;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 /// <summary>
 /// Used for managing quest item in <see cref="QuestLogPanelController"/>
@@ -16,7 +15,6 @@ public class QuestTitleController : MonoBehaviour
 
     #region Private methods
 
-    [Inject]
     private UIController uiController;
 
     private Button button;
@@ -29,6 +27,8 @@ public class QuestTitleController : MonoBehaviour
 
     private void Awake()
     {
+        uiController = FindObjectOfType<UIController>();
+
         button = GetComponent<Button>();
         button.onClick.AddListener(() => uiController.OpenQuestDescriptionPanel(Quest));
 
@@ -51,14 +51,6 @@ public class QuestTitleController : MonoBehaviour
     }
 
     #endregion
-
-    /// <summary>
-    /// Used for instantiating <see cref="QuestTitleController"/> prefab in runtime,
-    /// as it has fields, marked with <see cref="InjectAttribute"/>
-    /// </summary>
-    public class Factory : Factory<QuestTitleController>
-    {
-    }
 
     /// <summary>
     /// Used for storing <see cref="QuestTitleController"/> position in <see cref="QuestLogPanelController"/>

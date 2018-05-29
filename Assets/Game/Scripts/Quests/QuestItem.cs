@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Game.Characters.Player.Scripts;
 using Game.Characters.Scripts;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
 
 public class QuestItem : MonoBehaviour, IActor, IPointerClickHandler
 {
@@ -26,13 +26,18 @@ public class QuestItem : MonoBehaviour, IActor, IPointerClickHandler
     
     #region Private fields
 
-    [Inject]
+    [NotNull]
     private PlayerActor player;
 
     #endregion
     
     #region Public methods
-    
+
+    private void Awake()
+    {
+        player = FindObjectOfType<PlayerActor>();
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)

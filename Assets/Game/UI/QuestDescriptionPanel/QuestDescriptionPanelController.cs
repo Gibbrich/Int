@@ -6,7 +6,6 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Zenject;
 
 [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
 public class QuestDescriptionPanelController : BaseWindow
@@ -42,12 +41,15 @@ public class QuestDescriptionPanelController : BaseWindow
     #region Private fields
 
     [NotNull]
-    [Inject]
     private QuestSystem questSystem;
 
     [NotNull]
-    [Inject]
+    [SerializeField]
     private QuestLogPanelController questLogPanelController;
+
+    [NotNull]
+    [SerializeField]
+    private QuestGiverListController questGiverListController;
 
     [NotNull]
     private Text positiveButtonText;
@@ -64,8 +66,14 @@ public class QuestDescriptionPanelController : BaseWindow
 
     private void Start()
     {
+        questSystem = FindObjectOfType<QuestSystem>();
         closeButton.onClick.AddListener(() => IsPanelOpened = false);
-        InitRectTransformIfNeed();
+        rectTransform = GetComponent<RectTransform>();
+        
+        positiveButtonText = positiveButton.GetComponentInChildren<Text>();
+        negativeButtonText = negativeButton.GetComponentInChildren<Text>();
+        
+        gameObject.SetActive(false);
     }
 
     #endregion
@@ -73,10 +81,8 @@ public class QuestDescriptionPanelController : BaseWindow
     #region Public methods
 
     public void Open([NotNull] AbstractQuest quest)
-    {
-        InitRectTransformIfNeed();
-        
-        if (questLogPanelController.IsPanelOpened)
+    {        
+        if (questLogPanelController.IsPanelOpened || questGiverListController.IsPanelOpened)
         {
             rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 298, 300);
         }
@@ -138,13 +144,6 @@ public class QuestDescriptionPanelController : BaseWindow
 
     #region Private methods
 
-    [Inject]
-    private void Init()
-    {
-        positiveButtonText = positiveButton.GetComponentInChildren<Text>();
-        negativeButtonText = negativeButton.GetComponentInChildren<Text>();
-    }
-
     private void UpdateButtonState([NotNull] Button button,
                                    [NotNull] Text buttonText,
                                    [NotNull] string title,
@@ -157,14 +156,6 @@ public class QuestDescriptionPanelController : BaseWindow
             button.onClick.AddListener(onClickListener);
         }
         button.interactable = isInteractable;
-    }
-
-    private void InitRectTransformIfNeed()
-    {
-        if (rectTransform == null)
-        {
-            rectTransform = GetComponent<RectTransform>();
-        }
     }
 
     #endregion

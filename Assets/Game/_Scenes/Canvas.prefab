@@ -205,14 +205,13 @@ GameObject:
   - component: {fileID: 224933925811316052}
   - component: {fileID: 114100511823506054}
   - component: {fileID: 114962947375386214}
-  - component: {fileID: 114566579347873152}
   m_Layer: 5
   m_Name: TargetHealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1162180088155216
 GameObject:
   m_ObjectHideFlags: 1
@@ -746,7 +745,6 @@ GameObject:
   - component: {fileID: 224502518310088538}
   - component: {fileID: 114122537148378036}
   - component: {fileID: 114468665542341170}
-  - component: {fileID: 114607601199321896}
   m_Layer: 5
   m_Name: PlayerHealthBar
   m_TagString: Untagged
@@ -765,14 +763,13 @@ GameObject:
   - component: {fileID: 222044751037679262}
   - component: {fileID: 114255944083465776}
   - component: {fileID: 114609423905695300}
-  - component: {fileID: 114467214651041790}
   m_Layer: 5
   m_Name: QuestLogPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1637654446272776
 GameObject:
   m_ObjectHideFlags: 1
@@ -837,6 +834,7 @@ GameObject:
   - component: {fileID: 223603939281539874}
   - component: {fileID: 114733768905811430}
   - component: {fileID: 114792200141218190}
+  - component: {fileID: 114308945974841624}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -906,14 +904,13 @@ GameObject:
   - component: {fileID: 222082332151463372}
   - component: {fileID: 114886261287983530}
   - component: {fileID: 114504471868544850}
-  - component: {fileID: 114320722450092604}
   m_Layer: 5
   m_Name: MenuPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1768539136040370
 GameObject:
   m_ObjectHideFlags: 1
@@ -1030,14 +1027,13 @@ GameObject:
   - component: {fileID: 222677374427788864}
   - component: {fileID: 114182973963315556}
   - component: {fileID: 114188789612083372}
-  - component: {fileID: 114118364839906990}
   m_Layer: 5
   m_Name: QuestGiverListPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1876559690922344
 GameObject:
   m_ObjectHideFlags: 1
@@ -1147,14 +1143,13 @@ GameObject:
   - component: {fileID: 222470645613030944}
   - component: {fileID: 114376640019769294}
   - component: {fileID: 114576427610093112}
-  - component: {fileID: 114380387517146056}
   m_Layer: 5
   m_Name: QuestDescriptionPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1974331996771486
 GameObject:
   m_ObjectHideFlags: 1
@@ -1447,22 +1442,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114118364839906990
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1832101168406088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-  - {fileID: 114188789612083372}
-  _identifier: 
-  _context: {fileID: 0}
-  _bindType: 0
 --- !u!114 &114122537148378036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1710,6 +1689,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff490f7a00532d140adbdd4f440cf546, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  listItemPrefab: {fileID: 114088084549037314, guid: c89a1d13362b061428f05a67dafdab96,
+    type: 2}
   content: {fileID: 1109900657460072}
   closeButton: {fileID: 114325095301294444}
   distanceBetweenQUestTitles: 40
@@ -2008,6 +1989,23 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Scrollbar+ScrollEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114308945974841624
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1742306248677300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6500f474461da04b8ae6d94a41c4a07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuPanelController: {fileID: 114504471868544850}
+  questLogPanelController: {fileID: 114609423905695300}
+  questDescriptionPanelController: {fileID: 114576427610093112}
+  playerHealthBarSystem: {fileID: 114468665542341170}
+  targetHealthBarSystem: {fileID: 114962947375386214}
+  questGiverListController: {fileID: 114188789612083372}
 --- !u!114 &114317023553388956
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2020,22 +2018,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
---- !u!114 &114320722450092604
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1767445137491772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-  - {fileID: 114504471868544850}
-  _identifier: 
-  _context: {fileID: 0}
-  _bindType: 0
 --- !u!114 &114325095301294444
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2137,22 +2119,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114380387517146056
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1964156162412550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-  - {fileID: 114576427610093112}
-  _identifier: 
-  _context: {fileID: 0}
-  _bindType: 0
 --- !u!114 &114408470771074294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2380,22 +2346,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114467214651041790
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1616607365246698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-  - {fileID: 114609423905695300}
-  _identifier: 
-  _context: {fileID: 0}
-  _bindType: 0
 --- !u!114 &114468665542341170
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2407,6 +2357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41379cc5b3a98114eb56b71e7958fdfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldHideOnStart: 0
 --- !u!114 &114469652878383268
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2755,22 +2706,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Quest objectives:'
---- !u!114 &114566579347873152
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1161063044469978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-  - {fileID: 114962947375386214}
-  _identifier: TARGET_HEALTH_BAR
-  _context: {fileID: 0}
-  _bindType: 0
 --- !u!114 &114576427610093112
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2788,6 +2723,8 @@ MonoBehaviour:
   positiveButton: {fileID: 114831389117852218}
   negativeButton: {fileID: 114088774678499642}
   closeButton: {fileID: 114098056952260438}
+  questLogPanelController: {fileID: 114609423905695300}
+  questGiverListController: {fileID: 114188789612083372}
 --- !u!114 &114599779674705308
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2815,22 +2752,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114607601199321896
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1609133101527706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-  - {fileID: 114468665542341170}
-  _identifier: PLAYER_HEALTH_BAR
-  _context: {fileID: 0}
-  _bindType: 0
 --- !u!114 &114607778927626126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2873,6 +2794,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4d348ebd029984479ad13b9a57f8ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  listItemPrefab: {fileID: 114088084549037314, guid: c89a1d13362b061428f05a67dafdab96,
+    type: 2}
   content: {fileID: 1956624719125920}
   distanceBetweenQUestTitles: 40
 --- !u!114 &114627228522819944
@@ -3747,6 +3670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41379cc5b3a98114eb56b71e7958fdfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldHideOnStart: 1
 --- !u!114 &114981409143540604
 MonoBehaviour:
   m_ObjectHideFlags: 1

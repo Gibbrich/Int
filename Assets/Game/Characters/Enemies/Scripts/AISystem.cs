@@ -5,7 +5,7 @@ using Game.Scripts;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
-using Zenject;
+
 
 namespace Game.Characters.Enemies
 {
@@ -63,7 +63,6 @@ namespace Game.Characters.Enemies
         private StateMachine<EnemyState> stateMachine;
 
         [NotNull]
-        [Inject]
         private PlayerActor player;
 
         [NotNull]
@@ -78,7 +77,7 @@ namespace Game.Characters.Enemies
         private IDamageable self;
 
         [NotNull]
-        private Character character;
+        private AIMovement aiMovement;
 
         private float patrolWaypointReachedTime = 0;
         private bool isPatrolWaypointReached = false;
@@ -94,7 +93,8 @@ namespace Game.Characters.Enemies
             navigationAgent = GetComponent<NavMeshAgent>();
             initialPosition = transform.position;
             self = GetComponent<IDamageable>();
-            character = GetComponent<Character>();
+            aiMovement = GetComponent<AIMovement>();
+            player = FindObjectOfType<PlayerActor>();
         }
 
         // Use this for initialization
@@ -145,7 +145,7 @@ namespace Game.Characters.Enemies
         {
             if (self.IsAlive())
             {
-                character.SetDestination(initialPosition);
+                aiMovement.SetDestination(initialPosition);
             }
         }
 
@@ -194,7 +194,7 @@ namespace Game.Characters.Enemies
 
         private void OnPatrolStart()
         {
-            character.SetDestination(patrolPath.GetTargetWaypoint());
+            aiMovement.SetDestination(patrolPath.GetTargetWaypoint());
         }
 
         private void OnPatrolUpdate()
@@ -210,7 +210,7 @@ namespace Game.Characters.Enemies
                 if (Time.time - patrolWaypointReachedTime >= patrolPause)
                 {
                     patrolPath.OnTargetWaypointReached();
-                    character.SetDestination(patrolPath.GetTargetWaypoint());
+                    aiMovement.SetDestination(patrolPath.GetTargetWaypoint());
                     isPatrolWaypointReached = false;
                 }
             }
@@ -234,7 +234,7 @@ namespace Game.Characters.Enemies
             }
             else if (IsPlayerWithinAggroRadius())
             {
-                character.SetDestination(player.transform.position, waypointTolerance);
+                aiMovement.SetDestination(player.transform.position, waypointTolerance);
             }
             else
             {

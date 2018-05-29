@@ -2,7 +2,6 @@
 using Game.Scripts;
 using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 
 namespace Game.Characters.Scripts
 {

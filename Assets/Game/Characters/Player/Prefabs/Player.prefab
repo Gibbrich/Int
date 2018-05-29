@@ -1172,9 +1172,9 @@ GameObject:
   - component: {fileID: 114705832521258942}
   - component: {fileID: 114468571393281376}
   - component: {fileID: 95998066906028382}
-  - component: {fileID: 114479853155708542}
   - component: {fileID: 136648555760982788}
   - component: {fileID: 54873332134350296}
+  - component: {fileID: 114144250179847780}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2616,6 +2616,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   rotationSpeed: 180
+--- !u!114 &114144250179847780
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1921450622021848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38b8bcc7dc39bcf41bbf721ef326ca78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114468571393281376
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2627,22 +2638,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 950a71afe82248a4e92f83cc47849bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114479853155708542
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1921450622021848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-  - {fileID: 114801561474904000}
-  _identifier: 
-  _context: {fileID: 0}
-  _bindType: 0
 --- !u!114 &114493249196776332
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2655,8 +2650,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health:
-    currentValue: 100
-    maxValue: 100
+    currentValue: 1000
+    maxValue: 1000
 --- !u!114 &114705832521258942
 MonoBehaviour:
   m_ObjectHideFlags: 1

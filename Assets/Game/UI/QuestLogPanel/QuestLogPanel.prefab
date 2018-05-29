@@ -108,7 +108,6 @@ GameObject:
   - component: {fileID: 222776710022577622}
   - component: {fileID: 114069301587245244}
   - component: {fileID: 114779296774735468}
-  - component: {fileID: 114414767947247496}
   m_Layer: 5
   m_Name: QuestLogPanel
   m_TagString: Untagged
@@ -339,22 +338,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114414767947247496
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1610334479956486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-  - {fileID: 114779296774735468}
-  _identifier: 
-  _context: {fileID: 0}
-  _bindType: 0
 --- !u!114 &114468293966406692
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -470,7 +453,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4d348ebd029984479ad13b9a57f8ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  listItemPrefab: {fileID: 0}
   content: {fileID: 1905858734911970}
+  distanceBetweenQUestTitles: 40
 --- !u!114 &114816238195921114
 MonoBehaviour:
   m_ObjectHideFlags: 1

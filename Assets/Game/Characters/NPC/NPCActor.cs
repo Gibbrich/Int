@@ -4,7 +4,6 @@ using Game.Characters.Scripts;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
 
 /// <summary>
 /// This class should be used as interface for interactions with any NPC. 
@@ -18,7 +17,6 @@ public class NPCActor : MonoBehaviour, IActor, IPointerClickHandler
     private QuestGiverSystem questGiverSystem;
 
     [NotNull]
-    [Inject]
     private PlayerActor player;
 
     #endregion
@@ -29,6 +27,7 @@ public class NPCActor : MonoBehaviour, IActor, IPointerClickHandler
     void Start()
     {
         questGiverSystem = GetComponent<QuestGiverSystem>();
+        player = FindObjectOfType<PlayerActor>();
     }
 
     #endregion

@@ -5,9 +5,8 @@ using System.Linq;
 using Game.Characters.Scripts;
 using Game.Scripts.Quests;
 using JetBrains.Annotations;
-using ModestTree;
 using UnityEngine;
-using Zenject;
+using UnityEngine.SceneManagement;
 
 namespace Game.Characters.Player.Scripts
 {
@@ -18,10 +17,11 @@ namespace Game.Characters.Player.Scripts
     [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class PlayerActor : MonoBehaviour, IActor, IDamageable
     {
+        private const string PLAYER_LOAD_POINT = "PlayerLoadPoint";
+        
         #region Private fields
 
         [NotNull]
-        [Inject]
         private QuestSystem questSystem;
 
         [NotNull]
@@ -37,12 +37,16 @@ namespace Game.Characters.Player.Scripts
         private WeaponSystem weaponSystem;
 
         [NotNull]
-        [Inject]
         private UIController uiController;
 
         #endregion
 
         #region Unity callbacks
+
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
 
         private void Start()
         {
@@ -50,9 +54,15 @@ namespace Game.Characters.Player.Scripts
             inputSystem = GetComponent<PlayerInputSystem>();
             weaponSystem = GetComponent<WeaponSystem>();
             animationsSystem = GetComponent<AnimationsSystem>();
+            questSystem = GetComponent<QuestSystem>();
 
-            HealthState healthState = healthSystem.GetCurrentHealthState();
-            uiController.UpdatePlayerHealthBarValues(healthState.CurrentHealth, healthState.MaxHealth);
+            InitOuterDependencies();
+            SceneManager.sceneLoaded += OnSceneLoad;
+        }
+
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoad;
         }
 
         #endregion
@@ -106,18 +116,7 @@ namespace Game.Characters.Player.Scripts
         public void OnInteraction(List<AbstractQuest> quests)
         {
             animationsSystem.PlayInteractAnimation();
-            if (quests.IsEmpty())
-            {
-            }
-            else if (quests.Count == 1)
-            {
-                uiController.OpenQuestDescriptionPanel(quests.First());
-            }
-            else
-            {
-                uiController.ShowQuestGiverList(quests);
-            }
-            
+            uiController.OpenQuestGiverWindows(quests);
         }
 
         public void OnInteraction(WeaponConfig weaponConfig)
@@ -133,6 +132,37 @@ namespace Game.Characters.Player.Scripts
         public void OnEnemyKilled(string enemyName)
         {
             questSystem.UpdateKillEnemiesQuestsState(enemyName);
+        }
+
+        #endregion
+        
+        #region Private methods
+
+        private void OnSceneLoad(Scene scene, LoadSceneMode mode)
+        {
+            // todo temp dirty hack for player positioning after scene load
+            GameObject spawnPoint = GameObject.FindGameObjectWithTag(PLAYER_LOAD_POINT);
+            if (spawnPoint != null)
+            {
+                transform.position = spawnPoint.transform.position;
+            }
+            
+            // re-init outer dependencies as older was destroyed on scene unload
+            InitOuterDependencies();
+        }
+
+        /* todo    - switch to DI
+         * @author - Артур
+         * @date   - 29.05.2018
+         * @time   - 23:35
+        */        
+        private void InitOuterDependencies()
+        {
+            uiController = FindObjectOfType<UIController>();
+            HealthState healthState = healthSystem.GetCurrentHealthState();
+            uiController.UpdatePlayerHealthBarValues(healthState.CurrentHealth, healthState.MaxHealth);
+            
+            inputSystem.InitOuterDependencies();
         }
 
         #endregion
