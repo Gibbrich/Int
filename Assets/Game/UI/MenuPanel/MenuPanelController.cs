@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuPanelController : BaseWindow
@@ -47,12 +48,12 @@ public class MenuPanelController : BaseWindow
 
     private void OnMainMenuButtonClicked()
     {
-        Debug.Log("OnMainMenuButtonClicked");
+        SceneManager.LoadScene("StartScene");
     }
 
     private void OnExitButtonClicked()
     {
-        Debug.Log("OnExitButtonClicked");
+        Application.Quit();
     }
     
     #endregion

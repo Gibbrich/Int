@@ -33,7 +33,7 @@ public class WeaponConfig: ScriptableObject
     [SerializeField]
     private float attackRange;
     
-    [CanBeNull]
+    [NotNull]
     [EventRef]
     [SerializeField]
     private string attackSound;
@@ -81,7 +81,7 @@ public class WeaponConfig: ScriptableObject
 
     public void PlayAttackSound()
     {
-        if (attackSound != null)
+        if (attackSound.Length > 0)
         {
             RuntimeManager.PlayOneShot(attackSound);
         }
